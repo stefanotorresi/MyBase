@@ -6,7 +6,7 @@
  * ************************************************
  */
 
-namespace My\Entity;
+namespace MyBase\Entity;
 
 abstract class Entity
 {
