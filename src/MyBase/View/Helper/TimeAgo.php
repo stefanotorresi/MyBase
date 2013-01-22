@@ -5,7 +5,7 @@
  * @author Stefano Torresi <webdeveloper@stefanotorresi.it>
  */
 
-namespace My\View\Helper;
+namespace MyBase\View\Helper;
 
 use Zend\I18n\View\Helper\AbstractTranslatorHelper;
 
