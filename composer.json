@@ -1,0 +1,14 @@
+{
+    "name": "stefanotorresi/my-base",
+    "descriptions" : "A collection of generic and Zend misc classes",
+    "type": "library",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+    },
+    "autoload" : {
+        "psr-0": {
+            "MyBase" : "src"
+        }
+    }
+}
