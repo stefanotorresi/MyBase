@@ -15,9 +15,9 @@ abstract class Entity
      * @var int
      */
     protected $id;
-    
+
     /**
-     * 
+     *
      * @param mixed $properties
      */
     public function __construct($properties = array())
@@ -30,12 +30,10 @@ abstract class Entity
             $method = 'set'.$key;
             if (method_exists($this, $method)) {
                 $this->$method($value);
-            } else {
-                throw new \InvalidArgumentException("Uknown property '$key'");
-            }
+            } 
         }
     }
-    
+
     /**
      *
      * @return int
@@ -44,7 +42,7 @@ abstract class Entity
     {
         return $this->id;
     }
-    
+
     public static function fqcn()
     {
         return get_called_class();
