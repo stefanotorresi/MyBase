@@ -2,22 +2,12 @@
 
 namespace MyBase\Util;
 
+use DateTime;
+use ReflectionClass;
+use Traversable;
+
 class Serializor
 {
-    /**
-     * Converts the Doctrine Entity into a JSON Representation
-     *
-     * @param object $object The Object (Typically a Doctrine Entity) to convert to an array
-     * @param integer $depth The Depth of the object graph to pursue
-     * @param array $whitelist List of entity=>array(parameters) to convert
-     * @param array $blacklist List of entity=>array(parameters) to skip
-     * @return string
-     */
-    public static function json_encode($object, $depth = 1, $whitelist = array(), $blacklist = array())
-    {
-        return json_encode(Serializor::toArray($object, $depth, $whitelist, $blacklist));
-    }
-
     /**
      * Serializes our Doctrine Entities
      *
@@ -40,7 +30,7 @@ class Serializor
         }
 
         // If this is an array, we need to loop through the values
-        if (is_array($object) || $object instanceof \Doctrine\Common\Collections\Collection) {
+        if (is_array($object) || $object instanceof Traversable) {
             // Somthing to Hold Return Values
             $anArray = array();
 
@@ -77,7 +67,7 @@ class Serializor
         $clazzName = get_class($anObject);
 
         // Now get our reflection class for this class name
-        $reflectionClass = new \ReflectionClass($clazzName);
+        $reflectionClass = new ReflectionClass($clazzName);
 
         // Then grap the class properites
         $clazzProps = $reflectionClass->getProperties();
@@ -119,7 +109,7 @@ class Serializor
             $aValue = $anObject->$method_name();
 
             // If it is a datetime, lets make it a string
-            if ($aValue instanceof \DateTime) {
+            if ($aValue instanceof DateTime) {
                 $anArray[$prop->name] = $aValue->format('Y-m-d H:i:s');
 
                 continue;
