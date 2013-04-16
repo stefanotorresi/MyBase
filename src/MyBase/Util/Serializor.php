@@ -14,14 +14,14 @@ class Serializor
      * This is the primary entry point, because it assists with handling collections
      * as the primary Object
      *
-     * @param object $object The Object (Typically a Doctrine Entity) to convert to an array
+     * @param mixed $mixed something to converto to array
      * @param integer $depth The Depth of the object graph to pursue
      * @param array $whitelist List of entity=>array(parameters) to convert
      * @param array $blacklist List of entity=>array(parameters) to skip
      * @return NULL|Array
      *
      */
-    public static function toArray($object, $depth = 1, $whitelist = array(), $blacklist = array())
+    public static function toArray($mixed, $depth = 1, $whitelist = array(), $blacklist = array())
     {
 
         // If we drop below depth 0, just return NULL
@@ -30,21 +30,28 @@ class Serializor
         }
 
         // If this is an array, we need to loop through the values
-        if (is_array($object) || $object instanceof Traversable) {
+        if (is_array($mixed) || $mixed instanceof Traversable) {
             // Somthing to Hold Return Values
             $anArray = array();
 
             // The Loop
-            foreach ($object as $value) {
-                // Store the results
-                $anArray[] = Serializor::arrayizor($value, $depth, $whitelist, $blacklist);
+            foreach ($mixed as $key => $value) {
+                if (is_array($value) || $value instanceof Traversable) {
+                    $anArray[] = self::toArray($value, $depth - 1, $whitelist, $blacklist);
+                } else if (is_object($value)) {
+                    $anArray[] = self::arrayizor($value, $depth, $whitelist, $blacklist);
+                } else {
+                    $anArray[$key] = $value;
+                }
             }
 
             // Return it
             return $anArray;
-        } else {
+        } else if (is_object($mixed)) {
             // Just return it
-            return Serializor::arrayizor($object, $depth, $whitelist, $blacklist);
+            return self::arrayizor($mixed, $depth, $whitelist, $blacklist);
+        } else {
+            return $mixed;
         }
     }
 
@@ -67,7 +74,7 @@ class Serializor
         $clazzName = get_class($anObject);
 
         // Now get our reflection class for this class name
-        $reflectionClass = new ReflectionClass($clazzName);
+        $reflectionClass = new ReflectionClass($anObject);
 
         // Then grap the class properites
         $clazzProps = $reflectionClass->getProperties();
@@ -102,11 +109,13 @@ class Serializor
             // We know the property, lets craft a getProperty method
             $method_name = 'get' . ucfirst($prop->name);
             // And check to see that it exists for this object
-            if (!method_exists($anObject, $method_name)) {
-                continue;
+            if (method_exists($anObject, $method_name)) {
+                // It did, so lets call it!
+                $aValue = $anObject->$method_name();
+            } else {
+                $prop->setAccessible(true);
+                $aValue = $prop->getValue($anObject);
             }
-            // It did, so lets call it!
-            $aValue = $anObject->$method_name();
 
             // If it is a datetime, lets make it a string
             if ($aValue instanceof DateTime) {
