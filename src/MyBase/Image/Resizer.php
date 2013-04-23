@@ -124,7 +124,6 @@ class Resizer
                 break;
 
             default :
-                $mode = self::DEFAULT_MODE;
                 $size = max(array($width, $height));
 
                 $command .= "-resize {$size}x{$size} ";
