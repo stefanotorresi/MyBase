@@ -23,7 +23,7 @@ class DoctrinePaginator extends AbstractPlugin
      * @param  mixed         $query       Entity FQCN or Doctrine query or Doctrine query builder.
      * @return ZendPaginator
      */
-    public function __invoke($data, $itemCountPerPage = 10)
+    public function __invoke($data, $itemCountPerPage = 10, $page = null)
     {
         if ($data instanceof EntityRepository) {
             $query = $data->createQueryBuilder('query');
@@ -36,11 +36,11 @@ class DoctrinePaginator extends AbstractPlugin
         $paginator = new Paginator($adapter);
         $paginator->setDefaultItemCountPerPage($itemCountPerPage);
 
-        $page = (int) $this->getController()->params()->fromQuery('page');
-
-        if ($page) {
-            $paginator->setCurrentPageNumber($page);
+        if (!$page) {
+            $page = $this->getController()->params()->fromQuery('page');
         }
+
+        $paginator->setCurrentPageNumber((int) $page);
 
         return $paginator;
     }
