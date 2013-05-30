@@ -8,34 +8,22 @@
 
 namespace MyBase\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\MappedSuperclass
+ */
 abstract class Entity
 {
     /**
-     *
      * @var int
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
-     *
-     * @param mixed $properties
-     */
-    public function __construct($properties = array())
-    {
-        if (!is_array($properties)) {
-            $properties = (array) $properties;
-        }
-
-        foreach ($properties as $key => $value) {
-            $method = 'set'.$key;
-            if (method_exists($this, $method)) {
-                $this->$method($value);
-            } 
-        }
-    }
-
-    /**
-     *
      * @return int
      */
     public function getId()
@@ -43,6 +31,19 @@ abstract class Entity
         return $this->id;
     }
 
+    /**
+     * @param int $id
+     * @return Entity
+     */
+    public function setId($id)
+    {
+        $this->id = (int) $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public static function fqcn()
     {
         return get_called_class();
