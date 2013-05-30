@@ -51,7 +51,9 @@ class Resizer
     /**
      *
      * @param string $sourceFile        absolute source file path
-     * @param string $destPath          absolute destinataion directory path
+     * @param $destDir
+     * @throws \Exception
+     * @internal param string $destPath absolute destinataion directory path
      */
     public function __construct($sourceFile, $destDir)
     {
@@ -75,9 +77,12 @@ class Resizer
 
     /**
      *
-     * @param int       $width
-     * @param int       $height
-     * @param string    $mode
+     * @param int $width
+     * @param int $height
+     * @param string $mode
+     * @param bool $overwrite
+     * @throws \ImagickException
+     * @throws \Exception
      * @return string   Destination absolute file path
      */
     public function getResize($width, $height, $mode = self::CROP_MODE, $overwrite = false)
