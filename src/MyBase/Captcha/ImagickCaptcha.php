@@ -71,6 +71,7 @@ class ImagickCaptcha extends Image
         }
 
         $img->waveImage(5, mt_rand(60, 100));
+        $img->scaleimage($w, $h);
         $img->drawImage($noise);
         $img->swirlImage(mt_rand(10, 30));
 
