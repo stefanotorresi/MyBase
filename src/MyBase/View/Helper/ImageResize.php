@@ -24,11 +24,7 @@ class ImageResize extends AbstractHelper
 
     public function __invoke($src, $options = array())
     {
-        foreach($this->options as $key => $defaultOption) {
-            if(!isset($options[$key])) {
-                $options[$key] = $defaultOption;
-            }
-        }
+        $options = array_merge($this->options, $options);
 
         if ( strrpos($options['public_dir'], '/')
                 != (strlen($options['public_dir'] - 1)) ) {
