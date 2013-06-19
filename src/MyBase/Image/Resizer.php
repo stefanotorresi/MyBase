@@ -68,7 +68,7 @@ class Resizer
         }
 
         if (!is_writable($destDir)) {
-            throw new Exception("Destination directory is not writeable");
+            throw new Exception("Destination directory is not writable");
         }
 
         $this->sourceFile   = $sourceFile;
