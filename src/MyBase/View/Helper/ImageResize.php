@@ -14,8 +14,11 @@ use Zend\View\Helper\AbstractHelper;
 class ImageResize extends AbstractHelper
 {
     protected $options = array(
+
+        // @TODO: make these two parameters reliably accessible by other services
         'dest_dir' => './public/img/generated',
         'public_dir' => '/img/generated',
+
         'width' => 0,
         'height' => 0,
         'mode' => Resizer::DEFAULT_MODE,
@@ -39,5 +42,10 @@ class ImageResize extends AbstractHelper
         $basePathHelper = $this->getView()->plugin('basePath');
 
         return $basePathHelper($options['public_dir'].basename($resize));
+    }
+
+    public function getDestinationDir()
+    {
+        return $this->options['dest_dir'];
     }
 }
