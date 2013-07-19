@@ -11,6 +11,8 @@ namespace MyBase\Image;
 use Exception;
 use ImagickException;
 use Imagick;
+use Traversable;
+use Zend\Stdlib\ArrayUtils;
 
 class Resizer
 {
@@ -19,84 +21,198 @@ class Resizer
     const DEFAULT_MODE = 'default';
 
     /**
-     *
      * @var string
      */
-    private $sourceFile;
+    protected $destDir;
 
     /**
-     *
-     * @var string
-     */
-    private $destDir;
-
-    /**
-     *
      * @var integer
      */
-    public $quality = 80;
+    protected $quality = 80;
 
     /**
-     *
      * @var string
      */
-    public $fillColor = '#ffffff';
+    protected $fillColor = '#ffffff';
 
     /**
-     *
      * @var string
      */
-    public $mode;
+    protected $mode;
 
     /**
-     *
-     * @param string $sourceFile        absolute source file path
-     * @param $destDir
-     * @throws \Exception
-     * @internal param string $destPath absolute destinataion directory path
+     * @var bool
      */
-    public function __construct($sourceFile, $destDir)
+    protected $overwrite = false;
+
+    /**
+     * @param array $options
+     */
+    public function __construct($options = array())
     {
-        if (!file_exists($sourceFile)) {
-            throw new Exception("Source file not found {$sourceFile}");
+        if (!extension_loaded('imagick')) {
+            throw new \RuntimeException('Imagick extension not loaded');
         }
 
-        $destDir = rtrim($destDir, "\\/");
+        $this->setOptions($options);
 
-        if (!is_dir($destDir)) {
-            throw new Exception("Destination is not a directory");
+        if ($this->mode === null) {
+            $this->mode = self::DEFAULT_MODE;
         }
-
-        if (!is_writable($destDir)) {
-            throw new Exception("Destination directory is not writable");
-        }
-
-        $this->sourceFile   = $sourceFile;
-        $this->destDir      = $destDir;
     }
 
     /**
-     *
-     * @param int $width
-     * @param int $height
-     * @param string $mode
-     * @param bool $overwrite
-     * @throws \ImagickException
-     * @throws \Exception
-     * @return string   Destination absolute file path
+     * @param array|Traversable $options
+     * @throws \InvalidArgumentException
      */
-    public function getResize($width, $height, $mode = self::CROP_MODE, $overwrite = false)
+    public function setOptions($options)
     {
-        if (!$mode) {
-            $mode = self::DEFAULT_MODE;
+        if ($options instanceof Traversable) {
+            $options = ArrayUtils::iteratorToArray($options);
+        } elseif (!is_array($options)) {
+            throw new \InvalidArgumentException(
+                'The options parameter must be an array or a Traversable'
+            );
         }
 
-        $srcFileName = pathinfo($this->sourceFile, PATHINFO_FILENAME);
+        foreach ($options as $key => $value) {
+            $method = 'set'.$key;
+            if (property_exists($this, $key) && method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+    }
 
-        $destination = $this->destDir.DIRECTORY_SEPARATOR
-                .$srcFileName.'-'.$mode.'-'.$width.'x'.$height.'.jpg';
+    /**
+     * @param int $quality
+     * @return Resizer
+     */
+    public function setQuality($quality)
+    {
+        $this->quality = $quality;
 
-        if (file_exists($destination) && !$overwrite) {
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuality()
+    {
+        return $this->quality;
+    }
+
+    /**
+     * @param string $mode
+     * @return Resizer
+     */
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param string $fillColor
+     * @return Resizer
+     */
+    public function setFillColor($fillColor)
+    {
+        $this->fillColor = $fillColor;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFillColor()
+    {
+        return $this->fillColor;
+    }
+
+    /**
+     * @param string $destDir
+     * @throws \InvalidArgumentException
+     * @return Resizer
+     */
+    public function setDestDir($destDir)
+    {
+        $destDir = realpath($destDir);
+
+        if (!is_dir($destDir) || !is_writable($destDir)) {
+            throw new \InvalidArgumentException("Destination is not a writable directory");
+        }
+
+        $this->destDir = $destDir;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDestDir()
+    {
+        return $this->destDir;
+    }
+
+    /**
+     * @param boolean $overwrite
+     * @return Resizer
+     */
+    public function setOverwrite($overwrite)
+    {
+        $this->overwrite = (bool) $overwrite;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getOverwrite()
+    {
+        return $this->overwrite;
+    }
+
+    /**
+     * @param $sourceFile
+     * @param $width
+     * @param $height
+     * @throws \ImagickException
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     * @return string
+     */
+    public function resize($sourceFile, $width, $height)
+    {
+        if (!file_exists($sourceFile)) {
+            throw new \InvalidArgumentException("Source file not found {$sourceFile}");
+        }
+
+        $srcFileName = pathinfo($sourceFile, PATHINFO_FILENAME);
+
+        $destination = vsprintf(
+            '%s-%s-%dx%d.jpg',
+            array(
+                $this->destDir.DIRECTORY_SEPARATOR.$srcFileName,
+                $this->mode,
+                $width,
+                $height
+            )
+        );
+
+        if (file_exists($destination) && !$this->overwrite) {
             return $destination;
         }
 
@@ -104,16 +220,20 @@ class Resizer
             throw new Exception("Destination file is not writeable");
         }
 
-        $command = "convert " . escapeshellarg($this->sourceFile) . " " .
-                    "-quality {$this->quality} ";
+        $command = "convert " . escapeshellarg($sourceFile) . " " .
+            "-quality {$this->quality} ";
 
-        $image = new Imagick($this->sourceFile);
+        $image = new Imagick($sourceFile);
 
-        switch($mode){
+        switch($this->mode){
             case self::FILL_MODE :
+                if (!$width || !$height) {
+                    throw new \InvalidArgumentException("Zero size is not accepted in '{$this->mode}' mode");
+                }
+
                 $command .= "-resize {$width}x{$height}\> ".
-                            "-size {$width}x{$height} xc:{$this->fillColor} ".
-                            "+swap -gravity center -composite ";
+                    "-size {$width}x{$height} xc:{$this->fillColor} ".
+                    "+swap -gravity center -composite ";
                 break;
 
             case self::CROP_MODE :
@@ -125,7 +245,7 @@ class Resizer
                 }
 
                 $command .= "-resize {$argResize} -gravity center ".
-                            "-crop {$width}x{$height}+0+0 ";
+                    "-crop {$width}x{$height}+0+0 ";
                 break;
 
             default :
@@ -136,10 +256,10 @@ class Resizer
 
         $command .= escapeshellarg($destination);
 
-        $return = 1;
+        $return = -1;
         @exec($command, $output, $return);
-        if ($return > 0) {
-            throw new ImagickException("Execution error");
+        if ($return !== 0) {
+            throw new \RuntimeException("Imagick execution error");
         }
 
         return $destination;

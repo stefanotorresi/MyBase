@@ -99,6 +99,7 @@ class Bootstrap
                 'autoregister_zf' => true,
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+                    'MyBase' => __DIR__ . '/../src/MyBase',
                 ),
             ),
         ));
