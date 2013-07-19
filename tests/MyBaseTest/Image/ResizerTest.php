@@ -78,6 +78,7 @@ class ResizerTest extends PHPUnit_Framework_TestCase
             'resize' => $resize,
             'width' => $width,
             'height' => $height,
+            'quality' => $resizer->getQuality()
         );
     }
 
@@ -95,6 +96,8 @@ class ResizerTest extends PHPUnit_Framework_TestCase
         if ( $data['height'] > 0 ) {
             $this->assertEquals($data['height'], $image->getimageheight());
         }
+
+        $this->assertEquals($data['quality'], $image->getcompression());
     }
 
     public function dataImages()

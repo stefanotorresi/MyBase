@@ -21,6 +21,6 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
     {
         $act = $this->helper->__invoke('./assets/unionjack.jpg', array('width' => 400, 'height' => 300));
 
-        $this->assertEquals('/data/unionjack-default-400x300.jpg', $act);
+        $this->assertEquals('/data/unionjack-default-400x300-80.jpg', $act);
     }
 }

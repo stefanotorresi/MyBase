@@ -206,12 +206,13 @@ class Resizer
         $srcFileName = pathinfo($sourceFile, PATHINFO_FILENAME);
 
         $destination = vsprintf(
-            '%s-%s-%dx%d.jpg',
+            '%s-%s-%dx%d-%d.jpg',
             array(
                 $this->destDir.DIRECTORY_SEPARATOR.$srcFileName,
                 $this->mode,
                 $width,
-                $height
+                $height,
+                $this->quality
             )
         );
 
