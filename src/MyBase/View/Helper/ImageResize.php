@@ -9,43 +9,93 @@
 namespace MyBase\View\Helper;
 
 use MyBase\Image\Resizer;
+use Zend\Stdlib\ArrayUtils;
 use Zend\View\Helper\AbstractHelper;
 
 class ImageResize extends AbstractHelper
 {
+    /**
+     * @var string
+     */
+    protected $documentRoot;
+
+    /**
+     * @var string
+     */
+    protected $relativeDestDir;
+
+    /**
+     * @var Resizer
+     */
+    protected $resizer;
+
+    /**
+     * @var array
+     */
     protected $options = array(
-
-        // @TODO: make these two parameters reliably accessible by other services
-        'dest_dir' => './public/img/generated',
-        'public_dir' => '/img/generated',
-
         'width' => 0,
         'height' => 0,
         'mode' => Resizer::DEFAULT_MODE,
         'overwrite' => false,
     );
 
+    /**
+     * @param string $documentRoot
+     * @param string $relativeDestDir
+     */
+    public function __construct($documentRoot = './public', $relativeDestDir = '/img/generated')
+    {
+        $this->documentRoot = $documentRoot;
+        $this->relativeDestDir = $relativeDestDir;
+    }
+
+    /**
+     * @param string $src
+     * @param array $options
+     * @return string
+     */
     public function __invoke($src, $options = array())
     {
-        $options = array_merge($this->options, $options);
+        $options = ArrayUtils::merge($this->options, $options);
 
-        if ( strrpos($options['public_dir'], '/')
-                != (strlen($options['public_dir'] - 1)) ) {
-            $options['public_dir'] .= '/';
-        }
+        $options['destDir'] = $this->getDestinationDir();
+        $resizer = $this->getResizer()->setOptions($options);
 
-        $resizer = new Resizer($src, $options['dest_dir']);
-
-        $resize = $resizer->getResize($options['width'], $options['height'],
-                $options['mode'], $options['overwrite']);
+        $resize = $resizer->resize($src, $options['width'], $options['height']);
 
         $basePathHelper = $this->getView()->plugin('basePath');
 
-        return $basePathHelper($options['public_dir'].basename($resize));
+        return $basePathHelper($this->relativeDestDir.'/'.basename($resize));
     }
 
+    /**
+     * @return string
+     */
     public function getDestinationDir()
     {
-        return $this->options['dest_dir'];
+        return $this->documentRoot . $this->relativeDestDir;
+    }
+
+    /**
+     * @param Resizer $resizer
+     * @return ImageResize
+     */
+    public function setResizer(Resizer $resizer)
+    {
+        $this->resizer = $resizer;
+
+        return $this;
+    }
+
+    /**
+     * @return Resizer
+     */
+    public function getResizer()
+    {
+        if (!$this->resizer) {
+            $this->resizer = new Resizer();
+        }
+
+        return $this->resizer;
     }
 }

@@ -64,6 +64,7 @@ class Resizer
     /**
      * @param array|Traversable $options
      * @throws \InvalidArgumentException
+     * @return Resizer
      */
     public function setOptions($options)
     {
@@ -81,6 +82,8 @@ class Resizer
                 $this->$method($value);
             }
         }
+
+        return $this;
     }
 
     /**
