@@ -253,9 +253,18 @@ class Resizer
                 break;
 
             default :
-                $size = max(array($width, $height));
 
-                $command .= "-resize {$size}x{$size} ";
+                if ($width == 0 && $height > 0) {
+                    $ratio = $image->getImageWidth() / $image->getImageHeight();
+                    $width = round($height * $ratio);
+                }
+
+                if ($height == 0 && $width > 0) {
+                    $inverseRatio = $image->getImageHeight() / $image->getImageWidth();
+                    $height = round($width * $inverseRatio);
+                }
+
+                $command .= "-resize {$width}x{$height}! ";
         }
 
         $command .= escapeshellarg($destination);

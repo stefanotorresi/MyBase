@@ -58,7 +58,7 @@ class ResizerTest extends PHPUnit_Framework_TestCase
      * @param $mode
      * @return string
      */
-    public function testCanCreateFile($source, $width, $height, $mode = null)
+    public function testResize($source, $width, $height, $mode = null)
     {
         $source = realpath($this->assetsDir.$source);
 
@@ -74,30 +74,28 @@ class ResizerTest extends PHPUnit_Framework_TestCase
 
         $this->assertFileExists($resize);
 
-        return array(
-            'resize' => $resize,
-            'width' => $width,
-            'height' => $height,
-            'quality' => $resizer->getQuality()
-        );
-    }
+        $resize = new Imagick($resize);
 
-    /**
-     * @depends testCanCreateFile
-     */
-    public function testImageSizeIsCorrect($data)
-    {
-        $image = new Imagick($data['resize']);
+        $ratio = $resize->getImageWidth() / $resize->getImageHeight();
+        $inverseRatio = $resize->getImageHeight() / $resize->getImageWidth();
 
-        if ( $data['width'] > 0 ) {
-            $this->assertEquals($data['width'], $image->getimagewidth());
+        if ( $width == 0 ) {
+            $expected = (int) round($height * $ratio);
+            $this->assertEquals($expected, $resize->getimagewidth());
+        } else {
+            $this->assertEquals($width, $resize->getimagewidth());
         }
 
-        if ( $data['height'] > 0 ) {
-            $this->assertEquals($data['height'], $image->getimageheight());
+        if ( $height == 0 ) {
+            $expected = (int) round($width * $inverseRatio);
+            $this->assertEquals($expected, $resize->getimageheight());
+        } else {
+            $this->assertEquals($height, $resize->getimageheight());
         }
 
-        $this->assertEquals($data['quality'], $image->getcompression());
+        if ($resize->getcompression() === Imagick::COMPRESSION_JPEG) {
+            $this->assertEquals($resizer->getQuality(), $resize->getcompressionquality());
+        }
     }
 
     public function dataImages()
