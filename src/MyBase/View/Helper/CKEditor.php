@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBlog\View\Helper;
+namespace MyBase\View\Helper;
 
 use Zend\Form\Element\Textarea;
 use Zend\Form\ElementInterface;
