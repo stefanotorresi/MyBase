@@ -9,28 +9,14 @@
 namespace MyBaseTest\Util;
 
 use PHPUnit_Framework_TestCase;
-use stdClass;
 use MyBase\Util\Serializor;
-
-
-
-class Foo {
-    public $name = 'foo';
-    public $bar;
-}
-
-class Bar {
-    public $name = 'bar';
-}
-
 
 class SerializorTest extends PHPUnit_Framework_TestCase
 {
     public function testFullAndPartialDepth()
     {
-
-        $foo = new Foo;
-        $bar = new Bar;
+        $foo = new TestAsset\Foo;
+        $bar = new TestAsset\Bar;
 
         $foo->bar = $bar;
 
