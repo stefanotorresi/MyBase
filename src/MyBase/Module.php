@@ -47,10 +47,10 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'CKEditor' => 'MyBlog\View\Helper\CKEditor',
-                'imageResize' => 'MyBlog\View\Helper\ImageResize',
-                'datePatternFormat' => 'MyBlog\View\Helper\DatePatternFormat',
-                'timeAgo' => 'MyBlog\View\Helper\TimeAgo'
+                'CKEditor' => 'MyBase\View\Helper\CKEditor',
+                'imageResize' => 'MyBase\View\Helper\ImageResize',
+                'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
+                'timeAgo' => 'MyBase\View\Helper\TimeAgo'
             ),
         );
     }
