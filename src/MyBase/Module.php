@@ -47,7 +47,6 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'CKEditor' => 'MyBase\View\Helper\CKEditor',
                 'imageResize' => 'MyBase\View\Helper\ImageResize',
                 'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
                 'timeAgo' => 'MyBase\View\Helper\TimeAgo'
