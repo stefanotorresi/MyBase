@@ -7,33 +7,38 @@
 
 namespace Mybase\Service;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
 use MyBase\Entity\Entity as BaseEntity;
+use Zend\Paginator\Paginator;
 
-abstract class AbstractEntityService
+abstract class AbstractEntityService implements EntityManagerAwareInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * Set the object manager
      *
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @return $this
      */
-    public function setObjectManager(ObjectManager $objectManager)
+    public function setEntityManager(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -41,11 +46,11 @@ abstract class AbstractEntityService
     /**
      * Get the object manager
      *
-     * @return ObjectManager
+     * @return EntityManager
      */
-    public function getObjectManager()
+    public function getEntityManager()
     {
-        return $this->objectManager;
+        return $this->entityManager;
     }
 
     /**
@@ -54,8 +59,8 @@ abstract class AbstractEntityService
      */
     public function save(BaseEntity $entity)
     {
-        $this->getObjectManager()->persist($entity);
-        $this->getObjectManager()->flush();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
         return $entity;
     }
@@ -66,9 +71,24 @@ abstract class AbstractEntityService
      */
     public function remove(BaseEntity $entity)
     {
-        $this->getObjectManager()->remove($entity);
-        $this->getObjectManager()->flush();
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
 
         return $this;
+    }
+
+    /**
+     * @param  Query|QueryBuilder $query
+     * @param  int                $page
+     * @param  int                $itemCountPerPage
+     * @return Paginator
+     */
+    public function getPagedQuery($query, $page, $itemCountPerPage = 20)
+    {
+        $paginator = new Paginator(new DoctrinePaginatorAdapter(new DoctrinePaginator($query)));
+        $paginator->setDefaultItemCountPerPage($itemCountPerPage);
+        $paginator->setCurrentPageNumber($page);
+
+        return $paginator;
     }
 }
