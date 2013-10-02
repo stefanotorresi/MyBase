@@ -12,26 +12,26 @@ use Zend\I18n\View\Helper\AbstractTranslatorHelper;
 class TimeAgo extends AbstractTranslatorHelper
 {
     /**
-     * 
-     * @param string $timeString
+     *
+     * @param  string $timeString
      * @return string
      */
     public function __invoke($timeString = null)
     {
-        
-        if ($timeString === null ) {
+
+        if ($timeString === null) {
             return $this;
         }
-        
+
         $time = strtotime($timeString);
-        
+
         if ($time === false) {
             throw new \InvalidArgumentException(sprintf(
                 '%s needs a strtotime() compatible string',
                 get_class($this)
             ));
         }
-        
+
         $timeAgo = time() - $time;
 
         $divisors = array (
@@ -48,11 +48,11 @@ class TimeAgo extends AbstractTranslatorHelper
             if ($timeAgo < $divisor) {
                 continue;
             }
-            
+
             $number = floor($timeAgo / $divisor);
             $result = $number .' '
                 .$this->translator->translatePlural($text.' ago', $text.'s'.' ago', $number);
-             
+
             return $result;
         }
     }

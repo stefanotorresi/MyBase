@@ -26,7 +26,7 @@ class TransportFactory implements FactoryInterface
 
     /**
      *
-     * @param ServiceLocatorInterface $services
+     * @param  ServiceLocatorInterface      $services
      * @return Transport\TransportInterface
      * @throws DomainException
      */

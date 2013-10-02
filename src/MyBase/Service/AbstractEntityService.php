@@ -54,7 +54,7 @@ abstract class AbstractEntityService implements EntityManagerAwareInterface
     }
 
     /**
-     * @param BaseEntity $entity
+     * @param  BaseEntity $entity
      * @return BaseEntity
      */
     public function save(BaseEntity $entity)

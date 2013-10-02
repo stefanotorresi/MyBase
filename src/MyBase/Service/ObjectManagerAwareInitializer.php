@@ -21,7 +21,7 @@ class ObjectManagerAwareInitializer implements InitializerInterface
      */
     public function initialize($instance, ServiceLocatorInterface $serviceLocator)
     {
-        if ( ! $instance instanceof ObjectManagerAwareInterface ) {
+        if (! $instance instanceof ObjectManagerAwareInterface) {
             return;
         }
 

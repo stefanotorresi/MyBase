@@ -62,7 +62,7 @@ class Resizer
     }
 
     /**
-     * @param array|Traversable $options
+     * @param  array|Traversable         $options
      * @throws \InvalidArgumentException
      * @return Resizer
      */
@@ -87,7 +87,7 @@ class Resizer
     }
 
     /**
-     * @param int $quality
+     * @param  int     $quality
      * @return Resizer
      */
     public function setQuality($quality)
@@ -106,7 +106,7 @@ class Resizer
     }
 
     /**
-     * @param string $mode
+     * @param  string  $mode
      * @return Resizer
      */
     public function setMode($mode)
@@ -125,7 +125,7 @@ class Resizer
     }
 
     /**
-     * @param string $fillColor
+     * @param  string  $fillColor
      * @return Resizer
      */
     public function setFillColor($fillColor)
@@ -144,7 +144,7 @@ class Resizer
     }
 
     /**
-     * @param string $destDir
+     * @param  string                    $destDir
      * @throws \InvalidArgumentException
      * @return Resizer
      */
@@ -170,7 +170,7 @@ class Resizer
     }
 
     /**
-     * @param boolean $overwrite
+     * @param  boolean $overwrite
      * @return Resizer
      */
     public function setOverwrite($overwrite)
@@ -229,7 +229,7 @@ class Resizer
 
         $image = new Imagick($sourceFile);
 
-        switch($this->mode){
+        switch ($this->mode) {
             case self::FILL_MODE :
                 if (!$width || !$height) {
                     throw new \InvalidArgumentException("Zero size is not accepted in '{$this->mode}' mode");

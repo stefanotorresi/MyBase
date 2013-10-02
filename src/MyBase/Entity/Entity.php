@@ -32,12 +32,13 @@ abstract class Entity
     }
 
     /**
-     * @param int $id
+     * @param  int    $id
      * @return Entity
      */
     public function setId($id)
     {
         $this->id = (int) $id;
+
         return $this;
     }
 

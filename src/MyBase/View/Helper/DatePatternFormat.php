@@ -15,7 +15,7 @@ use Zend\View\Helper\AbstractHelper;
 
 class DatePatternFormat extends AbstractHelper
 {
-    
+
     /**
      * Locale to use instead of the default.
      *
@@ -40,7 +40,7 @@ class DatePatternFormat extends AbstractHelper
     /**
      * Set timezone to use instead of the default.
      *
-     * @param string $timezone
+     * @param  string     $timezone
      * @return DateFormat
      */
     public function setTimezone($timezone)
@@ -50,6 +50,7 @@ class DatePatternFormat extends AbstractHelper
         foreach ($this->formatters as $formatter) {
             $formatter->setTimeZoneId($this->timezone);
         }
+
         return $this;
     }
 
@@ -70,12 +71,13 @@ class DatePatternFormat extends AbstractHelper
     /**
      * Set locale to use instead of the default.
      *
-     * @param  string $locale
+     * @param  string     $locale
      * @return DateFormat
      */
     public function setlocale($locale)
     {
         $this->locale = (string) $locale;
+
         return $this;
     }
 
@@ -92,13 +94,13 @@ class DatePatternFormat extends AbstractHelper
 
         return $this->locale;
     }
-    
+
     /**
      * Format a date using an IntlDateFormatter pattern.
      *
-     * @param  DateTime|integer|array   $date
-     * @param  string                   $pattern
-     * @param  string                   $locale
+     * @param  DateTime|integer|array     $date
+     * @param  string                     $pattern
+     * @param  string                     $locale
      * @return string
      * @throws Exception\RuntimeException
      */

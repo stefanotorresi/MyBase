@@ -11,14 +11,14 @@ namespace MyBase\Filter;
 use Zend\Filter\AbstractFilter;
 
 class Slugify extends AbstractFilter
-{   
+{
     /**
-     * @var string $separator 
-     */ 
+     * @var string $separator
+     */
     private $separator = '-';
-    
+
     /**
-     * Returns the string $value, removing all non alphabetical characters 
+     * Returns the string $value, removing all non alphabetical characters
      *
      * @param  string $value
      * @return string
@@ -28,7 +28,7 @@ class Slugify extends AbstractFilter
         if ($separator === null) {
             $separator = $this->separator;
         }
-        
+
         $value = strtolower(trim($value));
 
         if (extension_loaded('iconv')) {
@@ -41,16 +41,16 @@ class Slugify extends AbstractFilter
 
         return $value;
     }
-    
+
     /**
-     * 
-     * @param type $separator
+     *
+     * @param  type    $separator
      * @return Slugify
      */
     public function setSeparator($separator)
     {
         $this->separator = $separator;
-        
+
         return $this;
     }
 }

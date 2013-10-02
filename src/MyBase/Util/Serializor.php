@@ -14,10 +14,10 @@ class Serializor
      * This is the primary entry point, because it assists with handling collections
      * as the primary Object
      *
-     * @param mixed $mixed something to converto to array
-     * @param integer $depth The Depth of the object graph to pursue
-     * @param array $whitelist List of entity=>array(parameters) to convert
-     * @param array $blacklist List of entity=>array(parameters) to skip
+     * @param  mixed      $mixed     something to converto to array
+     * @param  integer    $depth     The Depth of the object graph to pursue
+     * @param  array      $whitelist List of entity=>array(parameters) to convert
+     * @param  array      $blacklist List of entity=>array(parameters) to skip
      * @return NULL|Array
      *
      */
@@ -38,7 +38,7 @@ class Serializor
             foreach ($mixed as $key => $value) {
                 if (is_array($value) || $value instanceof Traversable) {
                     $anArray[] = self::toArray($value, $depth - 1, $whitelist, $blacklist);
-                } else if (is_object($value)) {
+                } elseif (is_object($value)) {
                     $anArray[] = self::arrayizor($value, $depth, $whitelist, $blacklist);
                 } else {
                     $anArray[$key] = $value;
@@ -47,7 +47,7 @@ class Serializor
 
             // Return it
             return $anArray;
-        } else if (is_object($mixed)) {
+        } elseif (is_object($mixed)) {
             // Just return it
             return self::arrayizor($mixed, $depth, $whitelist, $blacklist);
         } else {
@@ -58,10 +58,10 @@ class Serializor
     /**
      * This does all the heavy lifting of actually converting to an array
      *
-     * @param object $object The Object (Typically a Doctrine Entity) to convert to an array
-     * @param integer $depth The Depth of the object graph to pursue
-     * @param array $whitelist List of entity=>array(parameters) to convert
-     * @param array $blacklist List of entity=>array(parameters) to skip
+     * @param  object     $object    The Object (Typically a Doctrine Entity) to convert to an array
+     * @param  integer    $depth     The Depth of the object graph to pursue
+     * @param  array      $whitelist List of entity=>array(parameters) to convert
+     * @param  array      $blacklist List of entity=>array(parameters) to skip
      * @return NULL|Array
      */
     private static function arrayizor($anObject, $depth, $whitelist = array(), $blacklist = array())
