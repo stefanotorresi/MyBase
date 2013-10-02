@@ -24,8 +24,8 @@ class ResizerTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('Imagick extension not loaded');
         }
 
-        $this->assetsDir = __DIR__ . './_files/';
-        $this->outputDir = $this->assetsDir . 'output/';
+        $this->assetsDir = __DIR__ . DIRECTORY_SEPARATOR . '_files';
+        $this->outputDir = realpath($this->assetsDir) . DIRECTORY_SEPARATOR . 'output';
 
         if (!is_dir($this->outputDir) && !mkdir($this->outputDir)) {
             $this->markTestSkipped('Cannot create output directory');
@@ -73,7 +73,7 @@ class ResizerTest extends PHPUnit_Framework_TestCase
      */
     public function testResize($source, $width, $height, $mode = null)
     {
-        $source = realpath($this->assetsDir.$source);
+        $source = $this->assetsDir . DIRECTORY_SEPARATOR . $source;
 
         $options = array(
             'destDir' => $this->outputDir,
@@ -138,7 +138,7 @@ class ResizerTest extends PHPUnit_Framework_TestCase
      */
     public function testZeroValueInFillModeThrowsException($source, $width, $height)
     {
-        $source = realpath($this->assetsDir.$source);
+        $source = realpath($this->assetsDir.DIRECTORY_SEPARATOR.$source);
 
         $resizer = new Resizer(array(
             'destDir' => $this->outputDir,
