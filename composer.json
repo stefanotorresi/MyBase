@@ -6,12 +6,21 @@
         "php" : ">=5.3.3",
         "zendframework/zendframework" : "2.*"
     },
-    "suggest" : {
-        "kriswallsmith/assetic": "Assetic is needed to run some tests"
+    "require-dev": {
+        "kriswallsmith/assetic": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
     },
     "autoload" : {
         "psr-0" : {
             "MyBase" : "src"
-        }
-    }
+        },
+        "classmap": [
+            "./"
+        ]
+    },
+    "license": "MIT"
 }
