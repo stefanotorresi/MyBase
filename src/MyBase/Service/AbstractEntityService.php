@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace Mybase\Service;
+namespace MyBase\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;

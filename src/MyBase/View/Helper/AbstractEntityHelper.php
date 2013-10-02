@@ -7,7 +7,7 @@
 
 namespace MyBase\View\Helper;
 
-use Mybase\Service\AbstractEntityService;
+use MyBase\Service\AbstractEntityService;
 use Zend\View\Helper\AbstractHelper as ZendAbstractHelper;
 
 abstract class AbstractEntityHelper extends ZendAbstractHelper

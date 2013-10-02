@@ -10,6 +10,7 @@ namespace MyBase;
 use Zend\ModuleManager\Feature;
 
 class Module implements
+    Feature\ConfigProviderInterface,
     Feature\AutoloaderProviderInterface,
     Feature\ViewHelperProviderInterface
 {
@@ -38,6 +39,14 @@ class Module implements
                 ),
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfig()
+    {
+        return include $this->getDir() . '/config/module.config.php';
     }
 
     /**
