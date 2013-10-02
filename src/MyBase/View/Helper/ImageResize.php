@@ -15,16 +15,6 @@ use Zend\View\Helper\AbstractHelper;
 class ImageResize extends AbstractHelper
 {
     /**
-     * @var string
-     */
-    protected $documentRoot;
-
-    /**
-     * @var string
-     */
-    protected $relativeDestDir;
-
-    /**
      * @var Resizer
      */
     protected $resizer;
@@ -33,6 +23,8 @@ class ImageResize extends AbstractHelper
      * @var array
      */
     protected $options = array(
+        'destDir' => './public/img/generated',
+        'relativeDir' => '/img/generated',
         'width' => 0,
         'height' => 0,
         'mode' => Resizer::DEFAULT_MODE,
@@ -40,44 +32,39 @@ class ImageResize extends AbstractHelper
     );
 
     /**
-     * @param string $documentRoot
-     * @param string $relativeDestDir
+     * @param null  $resizer
+     * @param array $options
      */
-    public function __construct($documentRoot = './public', $relativeDestDir = '/img/generated')
+    public function __construct($resizer = null, $options = array())
     {
-        $this->documentRoot = $documentRoot;
-        $this->relativeDestDir = $relativeDestDir;
+        if ($resizer) {
+            $this->setResizer($resizer);
+        }
+
+        if ($options) {
+            $this->setOptions($options);
+        }
     }
 
     /**
-     * @param string $src
-     * @param array $options
+     * @param  string $src
+     * @param  array  $options
      * @return string
      */
     public function __invoke($src, $options = array())
     {
-        $options = ArrayUtils::merge($this->options, $options);
-
-        $options['destDir'] = $this->getDestinationDir();
+        $options = $this->normalizeOptions($options);
         $resizer = $this->getResizer()->setOptions($options);
 
         $resize = $resizer->resize($src, $options['width'], $options['height']);
 
         $basePathHelper = $this->getView()->plugin('basePath');
 
-        return $basePathHelper($this->relativeDestDir.'/'.basename($resize));
+        return $basePathHelper($options['relativeDir'].'/'.basename($resize));
     }
 
     /**
-     * @return string
-     */
-    public function getDestinationDir()
-    {
-        return $this->documentRoot . $this->relativeDestDir;
-    }
-
-    /**
-     * @param Resizer $resizer
+     * @param  Resizer     $resizer
      * @return ImageResize
      */
     public function setResizer(Resizer $resizer)
@@ -97,5 +84,32 @@ class ImageResize extends AbstractHelper
         }
 
         return $this->resizer;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function normalizeOptions($options)
+    {
+        $options = ArrayUtils::merge($this->options, $options);
+        $options['relativeDir'] = ltrim(rtrim($options['relativeDir'], '/'), '/');
+
+        return $options;
     }
 }

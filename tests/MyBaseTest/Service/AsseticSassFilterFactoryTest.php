@@ -22,7 +22,7 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
         $this->factory = new AsseticSassFilterFactory();
 
         if (!class_exists('Assetic\Filter\Sass\SassFilter')) {
-            $this->markTEstSkipped('Assetic Sass filter class not found');
+            $this->markTestSkipped('Assetic Sass filter class not found');
         }
     }
 

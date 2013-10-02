@@ -15,9 +15,22 @@ use MyBase\Image\Resizer;
 class ResizerTest extends PHPUnit_Framework_TestCase
 {
 
-    protected $assetsDir = './assets/';
+    protected $assetsDir;
+    protected $outputDir;
 
-    protected $outputDir = './data/';
+    public function setUp()
+    {
+        if (!extension_loaded('imagick')) {
+            $this->markTestSkipped('Imagick extension not loaded');
+        }
+
+        $this->assetsDir = __DIR__ . './_files/';
+        $this->outputDir = $this->assetsDir . 'output/';
+
+        if (!is_dir($this->outputDir) && !mkdir($this->outputDir)) {
+            $this->markTestSkipped('Cannot create output directory');
+        }
+    }
 
     public function testAccessors()
     {
@@ -31,9 +44,9 @@ class ResizerTest extends PHPUnit_Framework_TestCase
 
         $resizer = new Resizer($options);
 
-        foreach($options as $key => $option) {
+        foreach ($options as $key => $option) {
             $method = 'get'.$key;
-            if($key == 'destDir') {
+            if ($key == 'destDir') {
                 $option = realpath($option);
             }
             $this->assertEquals($option, $resizer->{$method}());
@@ -79,14 +92,14 @@ class ResizerTest extends PHPUnit_Framework_TestCase
         $ratio = $resize->getImageWidth() / $resize->getImageHeight();
         $inverseRatio = $resize->getImageHeight() / $resize->getImageWidth();
 
-        if ( $width == 0 ) {
+        if ($width == 0) {
             $expected = (int) round($height * $ratio);
             $this->assertEquals($expected, $resize->getimagewidth());
         } else {
             $this->assertEquals($width, $resize->getimagewidth());
         }
 
-        if ( $height == 0 ) {
+        if ($height == 0) {
             $expected = (int) round($width * $inverseRatio);
             $this->assertEquals($expected, $resize->getimageheight());
         } else {
