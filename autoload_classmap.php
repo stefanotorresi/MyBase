@@ -24,5 +24,5 @@ return array(
   'MyBaseTest\Util\SerializorTest'                  => __DIR__ . '/tests/MyBaseTest/Util/SerializorTest.php',
   'MyBaseTest\Util\TestAsset\Bar'                   => __DIR__ . '/tests/MyBaseTest/Util/TestAsset/Bar.php',
   'MyBaseTest\Util\TestAsset\Foo'                   => __DIR__ . '/tests/MyBaseTest/Util/TestAsset/Foo.php',
-  'ImageResizeTest'                                 => __DIR__ . '/tests/MyBaseTest/View/Helper/ImageResizeTest.php',
+  'MyBaseTest\View\Helper\ImageResizeTest'          => __DIR__ . '/tests/MyBaseTest/View/Helper/ImageResizeTest.php',
 );
