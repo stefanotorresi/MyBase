@@ -6,6 +6,9 @@
         "php" : ">=5.3.3",
         "zendframework/zendframework" : "2.*"
     },
+    "suggest" : {
+        "kriswallsmith/assetic": "Assetic is needed to run some tests"
+    },
     "autoload" : {
         "psr-0" : {
             "MyBase" : "src"

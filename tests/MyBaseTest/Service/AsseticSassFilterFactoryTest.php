@@ -20,6 +20,10 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->factory = new AsseticSassFilterFactory();
+
+        if (!class_exists('Assetic\Filter\Sass\SassFilter')) {
+            $this->markTEstSkipped('Assetic Sass filter class not found');
+        }
     }
 
     protected function getServiceManagerMock($config)
