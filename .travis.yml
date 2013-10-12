@@ -6,6 +6,7 @@ php:
 
 before_install:
  - composer self-update
+ - composer require --dev satooshi/php-coveralls:~0.6
  - composer install --dev
  - printf "\n" | pecl install imagick-beta
  - wget http://cs.sensiolabs.org/get/php-cs-fixer.phar

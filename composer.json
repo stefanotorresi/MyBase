@@ -7,8 +7,7 @@
         "zendframework/zendframework" : "2.*"
     },
     "require-dev": {
-        "kriswallsmith/assetic": "*",
-        "satooshi/php-coveralls": "~0.6"
+        "kriswallsmith/assetic": "*"
     },
     "extra": {
         "branch-alias": {
