@@ -23,6 +23,18 @@ class EllpsisTest extends TestCase
         $this->filter = new Ellipsis();
     }
 
+    public function testConstructor()
+    {
+        $filter = new Ellipsis(66);
+
+        $this->assertEquals(66, $filter->getMaxLength());
+
+        $filter = new Ellipsis(['maxLength' => 66, 'ellipsis' => '...']);
+
+        $this->assertEquals(66, $filter->getMaxLength());
+        $this->assertEquals('...', $filter->getEllipsis());
+    }
+
     public function testOptionApi()
     {
         $this->filter->setEllipsis('...');
@@ -57,5 +69,13 @@ class EllpsisTest extends TestCase
         $filterManager = Bootstrap::getServiceManager()->get('FilterManager');
 
         $this->assertInstanceOf('MyBase\Filter\Ellipsis', $filterManager->get('ellipsis'));
+    }
+
+    public function testOneLongWordIsNotElided()
+    {
+        $text = "Loremipsumdolorsitamet";
+
+        $this->filter->setMaxLength(15);
+        $this->assertEquals($text, $this->filter->filter($text));
     }
 }

@@ -23,8 +23,7 @@ class Ellipsis extends AbstractFilter
     public function __construct($maxLengthOrOptions = null)
     {
         if ($maxLengthOrOptions !== null) {
-            if (! is_array($maxLengthOrOptions) && ! $maxLengthOrOptions instanceof Traversable)
-            {
+            if (! is_array($maxLengthOrOptions) && ! $maxLengthOrOptions instanceof Traversable) {
                 $this->setMaxLength($maxLengthOrOptions);
             } else {
                 $this->setOptions($maxLengthOrOptions);
@@ -48,7 +47,7 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @param  int  $maxLength
+     * @param int $maxLength
      * @return $this
      */
     public function setMaxLength($maxLength)
