@@ -13,10 +13,13 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
 use MyBase\Entity\Entity as BaseEntity;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Paginator\Paginator;
 
 abstract class AbstractEntityService implements EntityManagerAwareInterface
 {
+    use EventManagerAwareTrait;
+
     /**
      * @var EntityManager
      */
@@ -59,8 +62,10 @@ abstract class AbstractEntityService implements EntityManagerAwareInterface
      */
     public function save(BaseEntity $entity)
     {
+        $this->getEventManager()->trigger('save.pre', $this, ['entity' => $entity]);
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
+        $this->getEventManager()->trigger('save.post', $this, ['entity' => $entity]);
 
         return $entity;
     }
@@ -71,8 +76,10 @@ abstract class AbstractEntityService implements EntityManagerAwareInterface
      */
     public function remove(BaseEntity $entity)
     {
+        $this->getEventManager()->trigger('remove.pre', $this, ['entity' => $entity]);
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
+        $this->getEventManager()->trigger('remove.post', $this, ['entity' => $entity]);
 
         return $this;
     }
