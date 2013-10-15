@@ -3,7 +3,7 @@
     "descriptions" : "A collection of generic and Zend misc classes",
     "type" : "library",
     "require" : {
-        "php" : ">=5.3.3",
+        "php" : ">=5.4.1",
         "zendframework/zendframework" : "2.*"
     },
     "require-dev": {
