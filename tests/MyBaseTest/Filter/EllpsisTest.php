@@ -8,6 +8,7 @@
 namespace MyBaseTest\Filter;
 
 use MyBase\Filter\Ellipsis;
+use MyBaseTest\Bootstrap;
 use PHPUnit_Framework_TestCase as TestCase;
 
 class EllpsisTest extends TestCase
@@ -49,5 +50,12 @@ class EllpsisTest extends TestCase
 
         $this->filter->setMaxLength(58);
         $this->assertEquals("Lorem ipsum dolor sit amet, consectetur adipisicing elit, […]", $this->filter->filter($text));
+    }
+
+    public function testFunctionalFilterManagerIntegration()
+    {
+        $filterManager = Bootstrap::getServiceManager()->get('FilterManager');
+
+        $this->assertInstanceOf('MyBase\Filter\Ellipsis', $filterManager->get('ellipsis'));
     }
 }
