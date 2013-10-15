@@ -17,7 +17,7 @@ class Ellipsis extends AbstractFilter
      */
     protected $options = array(
         'maxLength' => null,
-        'ellipsis' => '…',
+        'ellipsis' => '[…]',
     );
 
     public function __construct($maxLengthOrOptions = null)
@@ -44,7 +44,7 @@ class Ellipsis extends AbstractFilter
             return $value;
         }
 
-        return substr($value, 0, strrpos(substr($value, 0, $this->getMaxLength()), ' ')) . $this->getEllipsis();
+        return substr($value, 0, strrpos(substr($value, 0, $this->getMaxLength()), ' ')) . ' ' . $this->getEllipsis();
     }
 
     /**
