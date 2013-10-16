@@ -12,7 +12,8 @@ use Zend\ModuleManager\Feature;
 class Module implements
     Feature\ConfigProviderInterface,
     Feature\AutoloaderProviderInterface,
-    Feature\ViewHelperProviderInterface
+    Feature\ViewHelperProviderInterface,
+    Feature\FilterProviderInterface
 {
     /**
      * Base module directory
@@ -59,6 +60,18 @@ class Module implements
                 'imageResize' => 'MyBase\View\Helper\ImageResize',
                 'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
                 'timeAgo' => 'MyBase\View\Helper\TimeAgo'
+            ),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilterConfig()
+    {
+        return array(
+            'invokables' => array(
+                'ellipsis' => 'MyBase\Filter\Ellipsis',
             ),
         );
     }
