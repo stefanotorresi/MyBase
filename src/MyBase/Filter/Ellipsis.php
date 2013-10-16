@@ -9,17 +9,28 @@ namespace MyBase\Filter;
 
 use Traversable;
 use Zend\Filter\AbstractFilter;
+use Zend\Stdlib\StringUtils;
+use Zend\Stdlib\StringWrapper\StringWrapperInterface;
 
 class Ellipsis extends AbstractFilter
 {
+    /**
+     * @var StringWrapperInterface
+     */
+    protected $stringWrapper;
+
     /**
      * @var int
      */
     protected $options = array(
         'maxLength' => null,
-        'ellipsis' => '[…]',
+        'ellipsis' => ' […]',
+        'encoding' => 'UTF-8',
     );
 
+    /**
+     * @param mixed $maxLengthOrOptions
+     */
     public function __construct($maxLengthOrOptions = null)
     {
         if ($maxLengthOrOptions !== null) {
@@ -32,7 +43,10 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * Returns the result of filtering $value
+     * Truncates a string to the next white space after the maximum size, and append an elision suffix
+     * Notes:
+     * - truncation is done by excess, so the limit is a soft one
+     * - elision length is taken into account with the max length
      *
      * @param  string $value
      * @return string
@@ -43,7 +57,24 @@ class Ellipsis extends AbstractFilter
             return $value;
         }
 
-        return substr($value, 0, strrpos(substr($value, 0, $this->getMaxLength()), ' ')) . ' ' . $this->getEllipsis();
+        $maxLength = $this->getMaxLength() - $this->getStringWrapper()->strlen($this->getEllipsis());
+
+        // find the first space in the elided part
+        $boundary = $this->getStringWrapper()->strpos($value, ' ', $maxLength);
+
+        if ($boundary === false) {
+            $boundary = $maxLength;
+        }
+
+        return rtrim($this->getStringWrapper()->substr($value, 0, $boundary)) . $this->getEllipsis();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxLength()
+    {
+        return $this->options['maxLength'];
     }
 
     /**
@@ -61,7 +92,15 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @param $character
+     * @return mixed
+     */
+    public function getEllipsis()
+    {
+        return $this->options['ellipsis'];
+    }
+
+    /**
+     * @param string $character
      * @return $this
      */
     public function setEllipsis($character)
@@ -72,18 +111,43 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMaxLength()
+    public function getEncoding()
     {
-        return $this->options['maxLength'];
+        return $this->options['encoding'];
     }
 
     /**
-     * @return mixed
+     * @param string $encoding
+     * @return $this
      */
-    public function getEllipsis()
+    public function setEncoding($encoding)
     {
-        return $this->options['ellipsis'];
+        $this->options['encoding'] = $encoding;
+        $this->stringWrapper = StringUtils::getWrapper($encoding);
+
+        return $this;
+    }
+
+    /**
+     * @return StringWrapperInterface
+     */
+    public function getStringWrapper()
+    {
+        if (!$this->stringWrapper) {
+            $this->stringWrapper = StringUtils::getWrapper($this->getEncoding());
+        }
+
+        return $this->stringWrapper;
+    }
+
+    /**
+     * @param StringWrapperInterface $stringWrapper
+     */
+    public function setStringWrapper(StringWrapperInterface $stringWrapper)
+    {
+        $stringWrapper->setEncoding($this->getEncoding());
+        $this->stringWrapper = $stringWrapper;
     }
 }

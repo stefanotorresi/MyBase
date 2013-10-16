@@ -10,6 +10,7 @@ namespace MyBaseTest\Filter;
 use MyBase\Filter\Ellipsis;
 use MyBaseTest\Bootstrap;
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Stdlib\StringUtils;
 
 class EllpsisTest extends TestCase
 {
@@ -52,16 +53,22 @@ class EllpsisTest extends TestCase
 
     public function testFilter()
     {
-        $text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+        $text = "Lorem ìpsum dòlor sit àmet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         $this->filter->setMaxLength(15);
-        $this->assertEquals("Lorem ipsum […]", $this->filter->filter($text));
+        $this->assertEquals("Lorem ìpsum […]", $this->filter->filter($text));
 
         $this->filter->setMaxLength(27);
-        $this->assertEquals("Lorem ipsum dolor sit […]", $this->filter->filter($text));
+        $this->assertEquals("Lorem ìpsum dòlor sit àmet, […]", $this->filter->filter($text));
 
-        $this->filter->setMaxLength(58);
-        $this->assertEquals("Lorem ipsum dolor sit amet, consectetur adipisicing elit, […]", $this->filter->filter($text));
+        $this->filter->setMaxLength(57);
+        $this->assertEquals("Lorem ìpsum dòlor sit àmet, consectetur adipisicing elit, […]", $this->filter->filter($text));
+    }
+
+    public function testNonStringFiltering()
+    {
+        $fake = new \stdClass();
+        $this->assertSame($fake, $this->filter->filter($fake));
     }
 
     public function testFunctionalFilterManagerIntegration()
@@ -76,6 +83,18 @@ class EllpsisTest extends TestCase
         $text = "Loremipsumdolorsitamet";
 
         $this->filter->setMaxLength(15);
-        $this->assertEquals($text, $this->filter->filter($text));
+        $this->assertEquals('Loremipsumd […]', $this->filter->filter($text));
+    }
+
+    public function testEncodingSetterAlsoSetsStringWrapper()
+    {
+        $this->filter->setEncoding('ISO-8859-1');
+        $this->assertEquals('ISO-8859-1', $this->filter->getStringWrapper()->getEncoding());
+    }
+
+    public function testStringWrapperSetterOverridesEncoding()
+    {
+        $this->filter->setStringWrapper(StringUtils::getWrapper('ISO-8859-1'));
+        $this->assertEquals('UTF-8', $this->filter->getStringWrapper()->getEncoding());
     }
 }
