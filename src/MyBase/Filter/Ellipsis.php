@@ -57,16 +57,22 @@ class Ellipsis extends AbstractFilter
             return $value;
         }
 
-        $maxLength = $this->getMaxLength() - $this->getStringWrapper()->strlen($this->getEllipsis());
+        $sw = $this->getStringWrapper();
+
+        if ($sw->strlen($value) <= $this->getMaxLength()) {
+            return $value;
+        }
+
+        $maxLength = $this->getMaxLength() - $sw->strlen($this->getEllipsis());
 
         // find the first space in the elided part
-        $boundary = $this->getStringWrapper()->strpos($value, ' ', $maxLength);
+        $boundary = $sw->strpos($value, ' ', $maxLength);
 
         if ($boundary === false) {
             $boundary = $maxLength;
         }
 
-        return rtrim($this->getStringWrapper()->substr($value, 0, $boundary)) . $this->getEllipsis();
+        return rtrim($sw->substr($value, 0, $boundary)) . $this->getEllipsis();
     }
 
     /**

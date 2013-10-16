@@ -97,4 +97,15 @@ class EllpsisTest extends TestCase
         $this->filter->setStringWrapper(StringUtils::getWrapper('ISO-8859-1'));
         $this->assertEquals('UTF-8', $this->filter->getStringWrapper()->getEncoding());
     }
+
+    public function testJustReturnIfMaxLengthIsHigherThanValueLength()
+    {
+        $text = "Lorem ipsum dolor sit amet";
+
+        $this->filter->setMaxLength(26);
+        $this->assertEquals($text, $this->filter->filter($text));
+
+        $this->filter->setMaxLength(27);
+        $this->assertEquals($text, $this->filter->filter($text));
+    }
 }
