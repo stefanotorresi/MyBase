@@ -1,2 +1,4 @@
-/nbproject
-/.idea
+nbproject
+.idea
+tests/coverage
+tests/phpunit.xml
