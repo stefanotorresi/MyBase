@@ -1,2 +1,2 @@
-coverage_clover: tests/report/clover.xml
-json_path: tests/report/coveralls.json
+coverage_clover: tests/coverage/clover.xml
+json_path: tests/coverage/coveralls.json
