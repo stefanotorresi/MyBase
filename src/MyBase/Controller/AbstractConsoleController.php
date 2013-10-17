@@ -25,8 +25,8 @@ abstract class AbstractConsoleController extends AbstractActionController
     {
         if (! $event->getRequest() instanceof ConsoleRequest) {
             throw new \RuntimeException(sprintf(
-                '%s can only be executed in a console environment',
-                __CLASS__
+                '%s can only dispatch requests in a console environment',
+                get_called_class()
             ));
         }
     }
