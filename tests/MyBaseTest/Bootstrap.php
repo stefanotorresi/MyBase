@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyI18nTest;
+namespace MyBaseTest;
 
 use Composer\Autoload\ClassLoader;
 use Zend\ModuleManager\ModuleManager;
@@ -23,13 +23,19 @@ class Bootstrap
     {
         $vendorPath = static::findParentPath('vendor');
 
-        $loader = require $vendorPath . '/autoload.php';
+        $autoloaderPath = $vendorPath . '/autoload.php';
+
+        if (! is_readable($autoloaderPath)) {
+            throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
+        }
+
+        $loader = require $autoloaderPath;
 
         if (! $loader instanceof ClassLoader) {
             throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
         }
 
-        $loader->add('MyI18nTest', dirname(__DIR__));
+        $loader->add(__NAMESPACE__, dirname(__DIR__));
 
         if (file_exists('./config/test.application.config.php')) {
             $config = require './config/test.application.config.php';

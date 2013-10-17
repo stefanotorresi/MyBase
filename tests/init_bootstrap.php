@@ -10,6 +10,6 @@ namespace MyBaseTest;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
-include __DIR__ . '/' . __NAMESPACE__ . '/Bootstrap.php';
+require __DIR__ . '/' . __NAMESPACE__ . '/Bootstrap.php';
 
 Bootstrap::init();
