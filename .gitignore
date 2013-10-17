@@ -1,4 +1,6 @@
 nbproject
 .idea
+composer.lock
+vendor
 tests/coverage
 tests/phpunit.xml
