@@ -8,6 +8,8 @@
 namespace MyBase;
 
 use Zend\ModuleManager\Feature;
+use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Glob;
 
 abstract class BaseModule implements
     Feature\AutoloaderProviderInterface,
@@ -32,16 +34,16 @@ abstract class BaseModule implements
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
                 $this->getDir() . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     $this->getNamespace() => $this->getDir() . '/src/' . $this->getNamespace(),
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -49,6 +51,14 @@ abstract class BaseModule implements
      */
     public function getConfig()
     {
-        return include $this->getDir() . '/config/module.config.php';
+        $config = [];
+
+        $configFiles = Glob::glob($this->getDir() . '/config/*.config.php');
+
+        foreach ($configFiles as $configFile) {
+            $config = ArrayUtils::merge($config, include $configFile);
+        }
+
+        return $config;
     }
 }
