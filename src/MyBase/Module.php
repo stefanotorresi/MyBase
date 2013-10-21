@@ -9,16 +9,12 @@ namespace MyBase;
 
 use Zend\ModuleManager\Feature;
 
-class Module implements
-    Feature\ConfigProviderInterface,
-    Feature\AutoloaderProviderInterface,
+class Module extends BaseModule implements
     Feature\ViewHelperProviderInterface,
     Feature\FilterProviderInterface
 {
     /**
-     * Base module directory
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getDir()
     {
@@ -28,26 +24,9 @@ class Module implements
     /**
      * {@inheritdoc}
      */
-    public function getAutoloaderConfig()
+    public function getNamespace()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                $this->getDir() . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__,
-                ),
-            ),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfig()
-    {
-        return include $this->getDir() . '/config/module.config.php';
+        return __NAMESPACE__;
     }
 
     /**
