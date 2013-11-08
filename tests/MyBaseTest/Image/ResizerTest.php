@@ -14,7 +14,6 @@ use MyBase\Image\Resizer;
 
 class ResizerTest extends PHPUnit_Framework_TestCase
 {
-
     protected $assetsDir;
     protected $outputDir;
 
@@ -40,6 +39,7 @@ class ResizerTest extends PHPUnit_Framework_TestCase
             'mode' => Resizer::CROP_MODE,
             'quality' => 66,
             'fillColor' => '#000000',
+            'dpi' => 72,
         );
 
         $resizer = new Resizer($options);
@@ -136,13 +136,13 @@ class ResizerTest extends PHPUnit_Framework_TestCase
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testZeroValueInFillModeThrowsException($source, $width, $height)
+    public function testInvalidImages($source, $width, $height, $mode)
     {
         $source = realpath($this->assetsDir.DIRECTORY_SEPARATOR.$source);
 
         $resizer = new Resizer(array(
             'destDir' => $this->outputDir,
-            'mode' => Resizer::FILL_MODE,
+            'mode' => $mode,
             'overwrite' => true,
         ));
 
@@ -152,10 +152,16 @@ class ResizerTest extends PHPUnit_Framework_TestCase
     public function invalidImages()
     {
         return array(
-            array('unionjack.jpg', 400, 0),
-            array('unionjack.jpg', 0, 400),
-            array('unionjack.jpg', 0, 0),
-            array('nonexistent', 400, 300),
+            array('unionjack.jpg', 400, 0, Resizer::FILL_MODE),
+            array('unionjack.jpg', 0, 400, Resizer::FILL_MODE),
+            array('unionjack.jpg', 0, 0, Resizer::FILL_MODE),
+            array('unionjack.jpg', 0, 0, Resizer::CROP_MODE),
+            array('nonexistent', 400, 300, Resizer::DEFAULT_MODE),
         );
+    }
+
+    public function testExistentDestinationIsReturnedWhenOverwriteIsOff()
+    {
+        // @todo
     }
 }

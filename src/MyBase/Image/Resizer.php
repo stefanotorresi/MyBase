@@ -11,6 +11,8 @@ namespace MyBase\Image;
 use Exception;
 use ImagickException;
 use Imagick;
+use InvalidArgumentException;
+use RuntimeException;
 use Traversable;
 use Zend\Stdlib\ArrayUtils;
 
@@ -46,12 +48,18 @@ class Resizer
     protected $overwrite = false;
 
     /**
-     * @param array $options
+     * @var int
+     */
+    protected $dpi = 96;
+
+    /**
+     * @param  array            $options
+     * @throws RuntimeException
      */
     public function __construct($options = array())
     {
         if (!extension_loaded('imagick')) {
-            throw new \RuntimeException('Imagick extension not loaded');
+            throw new RuntimeException('Imagick extension not loaded');
         }
 
         $this->setOptions($options);
@@ -62,16 +70,16 @@ class Resizer
     }
 
     /**
-     * @param  array|Traversable         $options
-     * @throws \InvalidArgumentException
-     * @return Resizer
+     * @param  array|Traversable        $options
+     * @throws InvalidArgumentException
+     * @return $this
      */
     public function setOptions($options)
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         } elseif (!is_array($options)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The options parameter must be an array or a Traversable'
             );
         }
@@ -87,8 +95,8 @@ class Resizer
     }
 
     /**
-     * @param  int     $quality
-     * @return Resizer
+     * @param int $quality
+     * @return $this
      */
     public function setQuality($quality)
     {
@@ -106,8 +114,8 @@ class Resizer
     }
 
     /**
-     * @param  string  $mode
-     * @return Resizer
+     * @param string $mode
+     * @return $this
      */
     public function setMode($mode)
     {
@@ -125,8 +133,8 @@ class Resizer
     }
 
     /**
-     * @param  string  $fillColor
-     * @return Resizer
+     * @param string $fillColor
+     * @return $this
      */
     public function setFillColor($fillColor)
     {
@@ -144,16 +152,16 @@ class Resizer
     }
 
     /**
-     * @param  string                    $destDir
-     * @throws \InvalidArgumentException
-     * @return Resizer
+     * @param  string                   $destDir
+     * @throws InvalidArgumentException
+     * @return $this
      */
     public function setDestDir($destDir)
     {
         $destDir = realpath($destDir);
 
         if (!is_dir($destDir) || !is_writable($destDir)) {
-            throw new \InvalidArgumentException("Destination is not a writable directory");
+            throw new InvalidArgumentException("Destination is not a writable directory");
         }
 
         $this->destDir = $destDir;
@@ -170,8 +178,8 @@ class Resizer
     }
 
     /**
-     * @param  boolean $overwrite
-     * @return Resizer
+     * @param boolean $overwrite
+     * @return $this
      */
     public function setOverwrite($overwrite)
     {
@@ -189,18 +197,37 @@ class Resizer
     }
 
     /**
+     * @return int
+     */
+    public function getDpi()
+    {
+        return $this->dpi;
+    }
+
+    /**
+     * @param int $dpi
+     * @return $this
+     */
+    public function setDpi($dpi)
+    {
+        $this->dpi = $dpi;
+
+        return $this;
+    }
+
+    /**
      * @param $sourceFile
      * @param $width
      * @param $height
      * @throws \ImagickException
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Exception
      * @return string
      */
     public function resize($sourceFile, $width, $height)
     {
         if (!file_exists($sourceFile)) {
-            throw new \InvalidArgumentException("Source file not found {$sourceFile}");
+            throw new InvalidArgumentException("Source file not found {$sourceFile}");
         }
 
         $srcFileName = pathinfo($sourceFile, PATHINFO_FILENAME);
@@ -208,11 +235,11 @@ class Resizer
         $destination = vsprintf(
             '%s-%s-%dx%d-%d.jpg',
             array(
-                $this->destDir.DIRECTORY_SEPARATOR.$srcFileName,
-                $this->mode,
+                $this->getDestDir().DIRECTORY_SEPARATOR.$srcFileName,
+                $this->getMode(),
                 $width,
                 $height,
-                $this->quality
+                $this->getQuality()
             )
         );
 
@@ -224,55 +251,49 @@ class Resizer
             throw new Exception("Destination file is not writeable");
         }
 
-        $command = "convert " . escapeshellarg($sourceFile) . " " .
-            "-quality {$this->quality} ";
-
         $image = new Imagick($sourceFile);
+        $image->setCompression(Imagick::COMPRESSION_JPEG);
+        $image->stripImage();
+        $image->setCompressionQuality($this->getQuality());
+        $image->setImageResolution($this->getDpi(), $this->getDpi());
+        $image->resampleImage($this->getDpi(), $this->getDpi(), Imagick::FILTER_LANCZOS, true);
 
         switch ($this->mode) {
             case self::FILL_MODE :
                 if (!$width || !$height) {
-                    throw new \InvalidArgumentException("Zero size is not accepted in '{$this->mode}' mode");
+                    throw new InvalidArgumentException("Zero size is not accepted in '{$this->mode}' mode");
                 }
 
-                $command .= "-resize {$width}x{$height}\> ".
-                    "-size {$width}x{$height} xc:{$this->fillColor} ".
-                    "+swap -gravity center -composite ";
+                $image->scaleImage($width, $height, true);
+                $oldWidth = $image->getImageWidth();
+                $oldHeight = $image->getImageHeight();
+                $image->setImageBackgroundColor($this->getFillColor());
+                $image->extentImage($width, $height, ($oldWidth - $width) / 2, ($oldHeight - $height) / 2);
+                $image->writeImage($destination);
+
                 break;
 
             case self::CROP_MODE :
-                // check ratio
-                if ( $height > 0 && ($image->getImageWidth() / $image->getImageHeight()) > ($width / $height) ) {
-                    $argResize = "x".$height;
-                } else {
-                    $argResize = $width."x";
+                if (!$width && !$height) {
+                    throw new InvalidArgumentException("Either width or height must be non zero in '{$this->mode}' mode");
                 }
 
-                $command .= "-resize {$argResize} -gravity center ".
-                    "-crop {$width}x{$height}+0+0 ";
+                if (!$width) {
+                    $width = $height;
+                }
+
+                if (!$height) {
+                    $height = $width;
+                }
+
+                $image->cropThumbnailImage($width, $height);
+                $image->writeImage($destination);
+
                 break;
 
             default :
-
-                if ($width == 0 && $height > 0) {
-                    $ratio = $image->getImageWidth() / $image->getImageHeight();
-                    $width = round($height * $ratio);
-                }
-
-                if ($height == 0 && $width > 0) {
-                    $inverseRatio = $image->getImageHeight() / $image->getImageWidth();
-                    $height = round($width * $inverseRatio);
-                }
-
-                $command .= "-resize {$width}x{$height}! ";
-        }
-
-        $command .= escapeshellarg($destination);
-
-        $return = -1;
-        @exec($command, $output, $return);
-        if ($return !== 0) {
-            throw new \RuntimeException("Imagick execution error");
+                $image->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
+                $image->writeImage($destination);
         }
 
         return $destination;
