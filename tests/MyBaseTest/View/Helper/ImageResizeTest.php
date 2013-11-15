@@ -84,15 +84,37 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
     {
         $helper = $this->helper;
         $resizer = $this->getMock('MyBase\Image\Resizer');
+        $translator = $this->getMock('Zend\I18n\Translator\Translator');
 
         $resizer->expects($this->once())
             ->method('resize')
-            ->will($this->throwException(new \Exception('some message')));
+            ->will($this->throwException(new \Exception()));
+
+        $translator->expects($this->once())
+            ->method('translate')
+            ->will($this->returnValue('translated message'));
+
+        $helper->setTranslator($translator);
+        $helper->setResizer($resizer);
+
+        $result = $helper->__invoke('missing-image', array('width' => 100, 'height' => 100));
+
+        $this->assertEquals('http://placehold.it/100x100&text=translated message', $result);
+    }
+
+    public function testShowResizerExceptionMessageAsPlaceholderText()
+    {
+        $helper = $this->helper;
+        $resizer = $this->getMock('MyBase\Image\Resizer');
+
+        $resizer->expects($this->once())
+            ->method('resize')
+            ->will($this->throwException(new \Exception('some exception message')));
 
         $helper->setResizer($resizer);
 
-        $result = $helper->__invoke('missing image', array('width' => 100, 'height' => 100));
+        $result = $helper->__invoke('missing-image', array('width' => 100, 'height' => 100, 'showResizerExceptions' => true));
 
-        $this->assertEquals('http://placehold.it/100x100&text=some message', $result);
+        $this->assertEquals('http://placehold.it/100x100&text=some exception message', $result);
     }
 }

@@ -9,10 +9,10 @@
 namespace MyBase\View\Helper;
 
 use MyBase\Image\Resizer;
+use Zend\I18n\View\Helper\AbstractTranslatorHelper;
 use Zend\Stdlib\ArrayUtils;
-use Zend\View\Helper\AbstractHelper;
 
-class ImageResize extends AbstractHelper
+class ImageResize extends AbstractTranslatorHelper
 {
     /**
      * @var Resizer
@@ -29,6 +29,7 @@ class ImageResize extends AbstractHelper
         'height' => 0,
         'mode' => Resizer::DEFAULT_MODE,
         'overwrite' => false,
+        'showResizerExceptions' => false,
     );
 
     /**
@@ -67,7 +68,8 @@ class ImageResize extends AbstractHelper
                 'http://placehold.it/%dx%d&text=%s',
                 $options['width'],
                 $options['height'],
-                $e->getMessage()
+                $options['showResizerExceptions'] ? $e->getMessage() :
+                    $this->getTranslator()->translate('Image not available')
             );
         }
 
