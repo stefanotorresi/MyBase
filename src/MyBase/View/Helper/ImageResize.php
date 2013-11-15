@@ -9,10 +9,10 @@
 namespace MyBase\View\Helper;
 
 use MyBase\Image\Resizer;
+use Zend\I18n\View\Helper\AbstractTranslatorHelper;
 use Zend\Stdlib\ArrayUtils;
-use Zend\View\Helper\AbstractHelper;
 
-class ImageResize extends AbstractHelper
+class ImageResize extends AbstractTranslatorHelper
 {
     /**
      * @var Resizer
@@ -29,6 +29,7 @@ class ImageResize extends AbstractHelper
         'height' => 0,
         'mode' => Resizer::DEFAULT_MODE,
         'overwrite' => false,
+        'showResizerExceptions' => false,
     );
 
     /**
@@ -54,13 +55,25 @@ class ImageResize extends AbstractHelper
     public function __invoke($src, $options = array())
     {
         $options = $this->normalizeOptions($options);
-        $resizer = $this->getResizer()->setOptions($options);
+        $this->getResizer()->setOptions($options);
 
-        $resize = $resizer->resize($src, $options['width'], $options['height']);
+        try {
+            $resize = $this->getResizer()->resize($src, $options['width'], $options['height']);
 
-        $basePathHelper = $this->getView()->plugin('basePath');
+            $basePathHelper = $this->getView()->plugin('basePath');
 
-        return $basePathHelper($options['relativeDir'].'/'.basename($resize));
+            $imageUri = $basePathHelper($options['relativeDir'].'/'.basename($resize));
+        } catch (\Exception $e) {
+            $imageUri = sprintf(
+                'http://placehold.it/%dx%d&text=%s',
+                $options['width'],
+                $options['height'],
+                $options['showResizerExceptions'] ? $e->getMessage() :
+                    $this->getTranslator()->translate('Image not available')
+            );
+        }
+
+        return $imageUri;
     }
 
     /**
