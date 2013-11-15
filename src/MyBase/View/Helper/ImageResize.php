@@ -54,13 +54,24 @@ class ImageResize extends AbstractHelper
     public function __invoke($src, $options = array())
     {
         $options = $this->normalizeOptions($options);
-        $resizer = $this->getResizer()->setOptions($options);
+        $this->getResizer()->setOptions($options);
 
-        $resize = $resizer->resize($src, $options['width'], $options['height']);
+        try {
+            $resize = $this->getResizer()->resize($src, $options['width'], $options['height']);
 
-        $basePathHelper = $this->getView()->plugin('basePath');
+            $basePathHelper = $this->getView()->plugin('basePath');
 
-        return $basePathHelper($options['relativeDir'].'/'.basename($resize));
+            $imageUri = $basePathHelper($options['relativeDir'].'/'.basename($resize));
+        } catch (\Exception $e) {
+            $imageUri = sprintf(
+                'http://placehold.it/%dx%d&text=%s',
+                $options['width'],
+                $options['height'],
+                $e->getMessage()
+            );
+        }
+
+        return $imageUri;
     }
 
     /**

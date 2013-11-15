@@ -56,20 +56,15 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
         $resizer = $this->getMock('MyBase\Image\Resizer'); /** @var $resizer Resizer */
         $helper->setResizer($resizer);
 
-        $options = $helper->normalizeOptions($options);
-
-        $resizer->expects($this->once())
-            ->method('setOptions')
-            ->will($this->returnSelf());
+        $normalizedOptions = $helper->normalizeOptions($options);
 
         $resizer->expects($this->once())
             ->method('resize')
-            ->with($image, $options['width'], $options['height'])
+            ->with($image, $normalizedOptions['width'], $normalizedOptions['height'])
             ->will($this->returnValue('some-filename'));
 
-        $this->assertEquals($resizer, $helper->getResizer());
         $this->assertEquals(
-            self::BASE_PATH . $options['relativeDir'].'/some-filename',
+            self::BASE_PATH . $normalizedOptions['relativeDir'].'/some-filename',
             $helper->__invoke($image, $options)
         );
     }
@@ -83,5 +78,21 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
             array('test-image.jpg', array('relativeDir' => '/foo/')),
             array('test-image.jpg', array('relativeDir' => '/foo')),
         );
+    }
+
+    public function testResizerExceptionAreCatchedAndPlaceholderIsDisplayed()
+    {
+        $helper = $this->helper;
+        $resizer = $this->getMock('MyBase\Image\Resizer');
+
+        $resizer->expects($this->once())
+            ->method('resize')
+            ->will($this->throwException(new \Exception('some message')));
+
+        $helper->setResizer($resizer);
+
+        $result = $helper->__invoke('missing image', array('width' => 100, 'height' => 100));
+
+        $this->assertEquals('http://placehold.it/100x100&text=some message', $result);
     }
 }
