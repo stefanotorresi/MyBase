@@ -27,7 +27,7 @@ abstract class AbstractModule implements
         if (! $this->dir) {
             $reflector = new \ReflectionClass(get_class($this));
             $classDir = dirname($reflector->getFileName());
-            $this->dir = $classDir . '/../..'; // assume PSR-0 compliant structure, e.g. src/Namespace/Module.php
+            $this->dir = realpath($classDir . '/../..'); // assume PSR-0 compliant structure, e.g. src/Namespace/Module.php
         }
 
         return $this->dir;
@@ -60,7 +60,7 @@ abstract class AbstractModule implements
     {
         $config = [];
 
-        $configFiles = Glob::glob($this->getDir() . '/config/' . $this->getConfigGlob());
+        $configFiles = Glob::glob($this->getDir() . '/config/' . $this->getConfigGlob(), Glob::GLOB_BRACE);
 
         foreach ($configFiles as $configFile) {
             $config = ArrayUtils::merge($config, include $configFile);
