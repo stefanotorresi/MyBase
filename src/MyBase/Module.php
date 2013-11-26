@@ -9,26 +9,10 @@ namespace MyBase;
 
 use Zend\ModuleManager\Feature;
 
-class Module extends BaseModule implements
+class Module extends AbstractModule implements
     Feature\ViewHelperProviderInterface,
     Feature\FilterProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDir()
-    {
-        return __DIR__ . '/../..';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return __NAMESPACE__;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -38,7 +22,8 @@ class Module extends BaseModule implements
             'invokables' => array(
                 'imageResize' => 'MyBase\View\Helper\ImageResize',
                 'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
-                'timeAgo' => 'MyBase\View\Helper\TimeAgo'
+                'timeAgo' => 'MyBase\View\Helper\TimeAgo',
+                'formfieldset' => 'MyBase\View\Helper\FormFieldset',
             ),
         );
     }
