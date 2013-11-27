@@ -22,4 +22,20 @@ return array(
             'MyAsseticSassFilter' => __NAMESPACE__ . '\Service\AsseticSassFilterFactory'
         ),
     ),
+
+    'view_helpers' => array(
+        'invokables' => array(
+            'imageResize' => 'MyBase\View\Helper\ImageResize',
+            'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
+            'timeAgo' => 'MyBase\View\Helper\TimeAgo',
+            'formfieldset' => 'MyBase\View\Helper\FormFieldset',
+        ),
+    ),
+
+    'filters' => array(
+        'invokables' => array(
+            'ellipsis' => 'MyBase\Filter\Ellipsis',
+            'fileArrayToString' => 'MyBase\Filter\FileArrayToString',
+        ),
+    ),
 );
