@@ -7,8 +7,6 @@
 
 namespace MyBase;
 
-use Zend\ModuleManager\Feature;
-
 class Module extends AbstractModule
 {
 

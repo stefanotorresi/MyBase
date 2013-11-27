@@ -7,7 +7,6 @@
 
 namespace MyBase\Filter;
 
-use Zend\Filter\Exception;
 use Zend\Filter\FilterInterface;
 use Zend\Stdlib\ArrayUtils;
 
@@ -53,7 +52,7 @@ class FileArrayToString implements FilterInterface
 
         if ($this->options['use_uploaded_name'] && isset($value['name'])) {
             $value = $value['name'];
-        } else if (isset($value['tmp_name'])) {
+        } elseif (isset($value['tmp_name'])) {
             $value = $value['tmp_name'];
         }
 
