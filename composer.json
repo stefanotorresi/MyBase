@@ -1,6 +1,6 @@
 {
     "name" : "stefanotorresi/my-base",
-    "descriptions" : "A collection of generic and Zend misc classes",
+    "description" : "A general purpose ZF2 module that provides miscellaneous classes",
     "type" : "library",
     "require" : {
         "php" : ">=5.4.1",
