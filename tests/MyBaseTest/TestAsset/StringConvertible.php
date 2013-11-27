@@ -5,11 +5,12 @@
  * ************************************************
  */
 
-namespace MyBase;
+namespace MyBaseTest\TestAsset;
 
-use Zend\ModuleManager\Feature;
-
-class Module extends AbstractModule
+class StringConvertible
 {
-
+    public function __toString()
+    {
+        return __CLASS__;
+    }
 }
