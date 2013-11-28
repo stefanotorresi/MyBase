@@ -13,17 +13,16 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
 use MyBase\Entity\Entity as BaseEntity;
+use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Paginator\Paginator;
 
-abstract class AbstractEntityService implements EntityManagerAwareInterface
+abstract class AbstractEntityService implements
+    EntityManagerAwareInterface,
+    EventManagerAwareInterface
 {
     use EventManagerAwareTrait;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
+    use EntityManagerAwareTrait;
 
     /**
      * @param EntityManager $entityManager
@@ -31,29 +30,6 @@ abstract class AbstractEntityService implements EntityManagerAwareInterface
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-
-    /**
-     * Set the object manager
-     *
-     * @param EntityManager $entityManager
-     * @return $this
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-
-        return $this;
-    }
-
-    /**
-     * Get the object manager
-     *
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
     }
 
     /**
