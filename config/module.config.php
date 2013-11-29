@@ -29,6 +29,7 @@ return array(
             'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
             'timeAgo' => 'MyBase\View\Helper\TimeAgo',
             'formfieldset' => 'MyBase\View\Helper\FormFieldset',
+            'bootstrapFormFile' => 'MyBase\View\Helper\BootstrapFormFile',
         ),
     ),
 
