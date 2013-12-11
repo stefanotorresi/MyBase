@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBase\Service;
+namespace MyBase\ServiceManager;
 
 use Assetic\Filter\Sass\SassFilter;
 use Zend\ServiceManager\FactoryInterface;

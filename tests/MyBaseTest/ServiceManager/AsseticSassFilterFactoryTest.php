@@ -5,9 +5,9 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Service;
+namespace MyBaseTest\ServiceManager;
 
-use MyBase\Service\AsseticSassFilterFactory;
+use MyBase\ServiceManager\AsseticSassFilterFactory;
 use PHPUnit_Framework_TestCase;
 
 class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
