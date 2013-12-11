@@ -6,22 +6,21 @@
  * ************************************************
  */
 
-namespace MyBase\Service;
+namespace MyBase\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 
-class ObjectManagerAwareInitializer implements InitializerInterface
+class EntityManagerAwareInitializer implements InitializerInterface
 {
     /**
      * {@inheritDoc}
      */
     public function initialize($instance, ServiceLocatorInterface $serviceLocator)
     {
-        if (! $instance instanceof ObjectManagerAwareInterface) {
+        if (! $instance instanceof EntityManagerAwareInterface) {
             return;
         }
 
@@ -31,7 +30,7 @@ class ObjectManagerAwareInitializer implements InitializerInterface
         /* @var $objectManager EntityManager */
         $objectManager = $serviceManager->get('Doctrine\ORM\EntityManager');
 
-        $instance->setObjectManager($objectManager);
+        $instance->setEntityManager($objectManager);
     }
 
 }

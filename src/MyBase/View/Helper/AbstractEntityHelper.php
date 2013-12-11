@@ -7,27 +7,25 @@
 
 namespace MyBase\View\Helper;
 
-use MyBase\Service\AbstractEntityService;
+use MyBase\DataMapper;
 use Zend\View\Helper\AbstractHelper as ZendAbstractHelper;
 
 abstract class AbstractEntityHelper extends ZendAbstractHelper
+    implements DataMapper\MapperAwareInterface
 {
+    use DataMapper\MapperAwareTrait
+
     /**
      * @var string
      */
     protected $partial;
 
     /**
-     * @var AbstractEntityService
+     * @param DataMapper\MapperInterface $mapper
      */
-    protected $entityService;
-
-    /**
-     * @param AbstractEntityService $entityService
-     */
-    public function __construct(AbstractEntityService $entityService)
+    public function __construct(DataMapper\MapperInterface $mapper)
     {
-        $this->entityService = $entityService;
+        $this->setMapper($mapper);
     }
 
     /**
@@ -45,9 +43,18 @@ abstract class AbstractEntityHelper extends ZendAbstractHelper
         return $this->render();
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return $this->render();
+        try {
+            $output = $this->render();
+        } catch (\Exception $e) {
+            $output = sprintf('An error occurred during %s rendering.', get_called_class());
+        }
+
+        return $output;
     }
 
     /**
