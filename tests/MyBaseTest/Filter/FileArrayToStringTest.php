@@ -70,9 +70,9 @@ class FileArrayToStringTest extends PHPUnit_Framework_TestCase
                 ''
             ],
             [
-                new \MyBaseTest\TestAsset\StringConvertible(),
+                new TestAsset\StringConvertible(),
                 [],
-                'MyBaseTest\TestAsset\StringConvertible'
+                'MyBaseTest\Filter\TestAsset\StringConvertible'
             ],
         ];
     }

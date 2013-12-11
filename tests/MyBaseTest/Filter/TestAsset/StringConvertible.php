@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\TestAsset;
+namespace MyBaseTest\Filter\TestAsset;
 
 class StringConvertible
 {
