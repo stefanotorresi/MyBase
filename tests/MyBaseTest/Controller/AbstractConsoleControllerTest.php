@@ -41,4 +41,33 @@ class AbstractConsoleControllerTest extends TestCase
             );
         }
     }
+
+    public function testConsoleGetter()
+    {
+        $controller = new TestAsset\ConcreteConsoleController();
+
+        $console = $this->getMock('Zend\Console\Adapter\AdapterInterface');
+
+        $controller->setConsole($console);
+
+        $this->assertSame($console, $controller->getConsole());
+    }
+
+    public function testConsoleGetterLazyness()
+    {
+        $controller = new TestAsset\ConcreteConsoleController();
+
+        $console = $this->getMock('Zend\Console\Adapter\AdapterInterface');
+
+        $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $serviceLocator->expects($this->atLeastOnce())
+            ->method('get')
+            ->with($this->logicalOr('console', 'ConsoleAdapter'))
+            ->will($this->returnValue($console));
+
+        $controller->setServiceLocator($serviceLocator);
+        $controller->setConsole(null);
+
+        $this->assertSame($console, $controller->getConsole());
+    }
 }

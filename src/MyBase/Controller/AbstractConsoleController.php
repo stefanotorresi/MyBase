@@ -7,6 +7,7 @@
 
 namespace MyBase\Controller;
 
+use Zend\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -14,6 +15,11 @@ use Zend\Mvc\MvcEvent;
 
 abstract class AbstractConsoleController extends AbstractActionController
 {
+    /**
+     * @var ConsoleAdapterInterface
+     */
+    protected $console;
+
     public function setEventManager(EventManagerInterface $events)
     {
         $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'preDispatch'), 100);
@@ -29,5 +35,25 @@ abstract class AbstractConsoleController extends AbstractActionController
                 get_called_class()
             ));
         }
+    }
+
+    /**
+     * @return ConsoleAdapterInterface
+     */
+    public function getConsole()
+    {
+        if (! $this->console) {
+            $this->console = $this->getServiceLocator()->get('console');
+        }
+
+        return $this->console;
+    }
+
+    /**
+     * @param ConsoleAdapterInterface $console
+     */
+    public function setConsole($console)
+    {
+        $this->console = $console;
     }
 }
