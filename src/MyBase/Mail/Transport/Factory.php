@@ -29,7 +29,7 @@ abstract class Factory
     );
 
     /**
-     * @param array $spec
+     * @param  array                     $spec
      * @return TransportInterface
      * @throws InvalidArgumentException
      * @throws Exception\DomainException

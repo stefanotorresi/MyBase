@@ -17,14 +17,14 @@ interface MapperInterface
 
     /**
      * @param  mixed $entity
-     * @param  bool $flush
+     * @param  bool  $flush
      * @return mixed
      */
     public function save($entity, $flush = true);
 
     /**
      * @param mixed $entity
-     * @param bool $flush
+     * @param bool  $flush
      */
     public function remove($entity, $flush = true);
 

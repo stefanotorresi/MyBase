@@ -7,7 +7,6 @@
 
 namespace MyBaseTest\View\Helper;
 
-use DateTime;
 use MyBase\View\Helper\DatePatternFormat;
 use ZendTest\I18n\View\Helper\DateFormatTest;
 

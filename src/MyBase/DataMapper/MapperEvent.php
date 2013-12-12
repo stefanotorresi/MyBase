@@ -18,7 +18,6 @@ class MapperEvent extends Event
     const FLUSH_PRE     = 'flush.pre';
     const FLUSH_POST    = 'flush.post';
 
-
     /**
      * @var mixed
      */

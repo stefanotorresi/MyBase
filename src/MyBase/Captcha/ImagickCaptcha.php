@@ -18,7 +18,7 @@ class ImagickCaptcha extends Image
     /**
      * Constructor
      *
-     * @param  array|\Traversable $options
+     * @param  array|\Traversable                    $options
      * @throws Exception\ExtensionNotLoadedException
      */
     public function __construct($options = null)
@@ -33,8 +33,8 @@ class ImagickCaptcha extends Image
     /**
      * Generate image captcha
      *
-     * @param string $id Captcha ID
-     * @param string $word Captcha word
+     * @param  string                            $id   Captcha ID
+     * @param  string                            $word Captcha word
      * @throws Exception\NoFontProvidedException
      */
     protected function generateImage($id, $word)

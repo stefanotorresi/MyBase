@@ -32,7 +32,7 @@ class EntityMapper extends Doctrine\EntityRepository implements
 
     /**
      * @param  mixed $entity
-     * @param  bool $flush
+     * @param  bool  $flush
      * @return mixed
      */
     public function save($entity, $flush = true)
@@ -50,7 +50,7 @@ class EntityMapper extends Doctrine\EntityRepository implements
 
     /**
      * @param mixed $entity
-     * @param bool $flush
+     * @param bool  $flush
      */
     public function remove($entity, $flush = true)
     {
@@ -90,8 +90,8 @@ class EntityMapper extends Doctrine\EntityRepository implements
 
     /**
      * @param  Doctrine\Query|Doctrine\QueryBuilder $query
-     * @param  int                $page
-     * @param  int                $itemCountPerPage
+     * @param  int                                  $page
+     * @param  int                                  $itemCountPerPage
      * @return Paginator
      */
     protected function getPaginatorFromQuery($query, $page, $itemCountPerPage = 20)
