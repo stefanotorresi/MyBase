@@ -36,6 +36,7 @@ class Bootstrap
         }
 
         $loader->add(__NAMESPACE__, dirname(__DIR__));
+        $loader->add('ZendTest', $vendorPath . '/zendframework/zendframework/tests');
 
         if (file_exists('./config/test.application.config.php')) {
             $config = require './config/test.application.config.php';
