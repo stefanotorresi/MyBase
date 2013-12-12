@@ -7,131 +7,64 @@
 
 namespace MyBase\View\Helper;
 
-use DateTime;
 use IntlDateFormatter;
-use Locale;
-use Zend\I18n\Exception;
-use Zend\View\Helper\AbstractHelper;
+use Zend\I18n\View\Helper\DateFormat;
 
-class DatePatternFormat extends AbstractHelper
+class DatePatternFormat extends DateFormat
 {
-
     /**
-     * Locale to use instead of the default.
-     *
      * @var string
      */
-    protected $locale;
+    protected $pattern;
 
     /**
-     * Timezone to use.
+     * pattern can be passed as second argument
      *
-     * @var string
-     */
-    protected $timezone;
-
-    /**
-     * Formatter instances.
-     *
-     * @var array
-     */
-    protected $formatters = array();
-
-    /**
-     * Set timezone to use instead of the default.
-     *
-     * @param  string     $timezone
-     * @return DateFormat
-     */
-    public function setTimezone($timezone)
-    {
-        $this->timezone = (string) $timezone;
-
-        foreach ($this->formatters as $formatter) {
-            $formatter->setTimeZoneId($this->timezone);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get the timezone to use.
-     *
-     * @return string|null
-     */
-    public function getTimezone()
-    {
-        if (!$this->timezone) {
-            return date_default_timezone_get();
-        }
-
-        return $this->timezone;
-    }
-
-    /**
-     * Set locale to use instead of the default.
-     *
-     * @param  string     $locale
-     * @return DateFormat
-     */
-    public function setlocale($locale)
-    {
-        $this->locale = (string) $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get the locale to use.
-     *
-     * @return string|null
-     */
-    public function getlocale()
-    {
-        if ($this->locale === null) {
-            $this->locale = Locale::getDefault();
-        }
-
-        return $this->locale;
-    }
-
-    /**
-     * Format a date using an IntlDateFormatter pattern.
-     *
-     * @param  DateTime|integer|array     $date
-     * @param  string                     $pattern
-     * @param  string                     $locale
-     * @return string
-     * @throws Exception\RuntimeException
+     * {@inheritdoc}
      */
     public function __invoke(
-        $date,
-        $pattern = '',
-        $locale   = null
-    ) {
-        if ($locale === null) {
-            $locale = $this->getlocale();
+        $date = null,
+        $dateType = IntlDateFormatter::NONE,
+        $timeType = IntlDateFormatter::NONE,
+        $locale = null,
+        $pattern = null
+    )
+    {
+        if ($date === null) {
+            return $this;
         }
 
-        $timezone    = $this->getTimezone();
-        $formatterId = md5($pattern . "\0" . $locale);
-
-        if (!isset($this->formatters[$formatterId])) {
-            $this->formatters[$formatterId] = new IntlDateFormatter(
-                $locale,
-                IntlDateFormatter::NONE,
-                IntlDateFormatter::NONE,
-                $timezone,
-                IntlDateFormatter::GREGORIAN,
-                $pattern
-            );
+        if (is_string($dateType)) {
+            $realPattern = $dateType;
+            $dateType = $timeType;
+            $timeType = $locale;
+            $locale = $pattern;
+            $pattern = $realPattern;
         }
 
-        // DateTime support for IntlDateFormatter::format() was only added in 5.3.4
-        if ($date instanceof DateTime && version_compare(PHP_VERSION, '5.3.4', '<')) {
-            $date = $date->getTimestamp();
+        if (! $pattern) {
+            $pattern = $this->getPattern();
         }
 
-        return $this->formatters[$formatterId]->format($date);
+        return parent::__invoke($date, $dateType, $timeType, $locale, $pattern);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPattern()
+    {
+        return $this->pattern;
+    }
+
+    /**
+     * @param mixed $pattern
+     * @return $this
+     */
+    public function setPattern($pattern)
+    {
+        $this->pattern = $pattern;
+
+        return $this;
     }
 }

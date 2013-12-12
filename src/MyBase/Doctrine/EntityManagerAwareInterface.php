@@ -5,38 +5,23 @@
  * ************************************************
  */
 
-namespace MyBase\Service;
+namespace MyBase\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 
-trait EntityManagerAwareTrait
+interface EntityManagerAwareInterface
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
     /**
      * Set the entity manager
      *
      * @param EntityManager $entityManager
-     * @return $this
      */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-
-        return $this;
-    }
+    public function setEntityManager(EntityManager $entityManager);
 
     /**
      * Get the entity manager
      *
      * @return EntityManager
      */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
+    public function getEntityManager();
 }
