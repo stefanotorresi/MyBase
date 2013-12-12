@@ -19,7 +19,7 @@ return array(
 
     'service_manager' => array(
         'factories' => array(
-            'MyAsseticSassFilter' => __NAMESPACE__ . '\Service\AsseticSassFilterFactory'
+            'MyAsseticSassFilter' => __NAMESPACE__ . '\ServiceManager\AsseticSassFilterFactory'
         ),
     ),
 
