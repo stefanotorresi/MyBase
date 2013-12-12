@@ -15,20 +15,30 @@ use Zend\Captcha\Exception;
 
 class ImagickCaptcha extends Image
 {
+    /**
+     * Constructor
+     *
+     * @param  array|\Traversable $options
+     * @throws Exception\ExtensionNotLoadedException
+     */
+    public function __construct($options = null)
+    {
+        if (! extension_loaded("imagick")) {
+            throw new Exception\ExtensionNotLoadedException(sprintf("%s requires Imagick extension", __CLASS__));
+        }
+
+        parent::__construct($options);
+    }
 
     /**
      * Generate image captcha
      *
-     * @param string $id   Captcha ID
+     * @param string $id Captcha ID
      * @param string $word Captcha word
+     * @throws Exception\NoFontProvidedException
      */
     protected function generateImage($id, $word)
     {
-        // Fallback to GD-based captcha when imagick is not installed
-        if (!extension_loaded("imagick")) {
-            return parent::generateImage($id, $word);
-        }
-
         $font = $this->getFont();
 
         if (empty($font)) {
