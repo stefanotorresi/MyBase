@@ -3,16 +3,20 @@
     "description" : "A general purpose ZF2 module that provides miscellaneous classes",
     "type" : "library",
     "require" : {
-        "php" : ">=5.4.1",
-        "zendframework/zendframework" : "2.*"
+        "php" : ">=5.4.1"
     },
     "require-dev": {
-        "kriswallsmith/assetic": "*"
+        "kriswallsmith/assetic": "1.*",
+        "zendframework/zendframework" : "2.*"
+    },
+    "suggest": {
+        "zendframework/zendframework" : "The framework is required for most of MyBase content",
+        "doctrine/doctrine2" : "Doctrine2 is required to use MyBase\\Doctrine package"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev",
-            "dev-0.x": "0.x-dev" 
+            "dev-0.x": "0.x-dev"
         }
     },
     "autoload" : {
