@@ -94,7 +94,7 @@ class EntityMapper extends Doctrine\EntityRepository implements
     public function getEntityManager()
     {
         return parent::getEntityManager();
-    } 
+    }
 
     /**
      * @param  Doctrine\Query|Doctrine\QueryBuilder $query
