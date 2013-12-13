@@ -24,6 +24,18 @@ class MapperEvent extends Event
     protected $entity;
 
     /**
+     * @param null $name
+     * @param null $target
+     * @param null $params
+     * @param null $entity
+     */
+    public function __construct($name = null, $target = null, $params = null, $entity = null)
+    {
+        parent::__construct($name, $target, $params);
+        $this->setEntity($entity);
+    }
+
+    /**
      * @return mixed
      */
     public function getEntity()
