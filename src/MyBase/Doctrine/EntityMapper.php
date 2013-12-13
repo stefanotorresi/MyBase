@@ -89,6 +89,14 @@ class EntityMapper extends Doctrine\EntityRepository implements
     }
 
     /**
+     * @return Doctrine\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return parent::getEntityManager();
+    } 
+
+    /**
      * @param  Doctrine\Query|Doctrine\QueryBuilder $query
      * @param  int                                  $page
      * @param  int                                  $itemCountPerPage
