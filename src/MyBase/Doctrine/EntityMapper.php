@@ -79,7 +79,7 @@ class EntityMapper extends Doctrine\EntityRepository implements
      * Set the entity manager
      *
      * @param Doctrine\EntityManager $entityManager
-     * @return $this
+     *                                              @return $this
      */
     public function setEntityManager(Doctrine\EntityManager $entityManager)
     {

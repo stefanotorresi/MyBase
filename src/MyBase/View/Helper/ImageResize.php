@@ -109,7 +109,7 @@ class ImageResize extends AbstractTranslatorHelper
 
     /**
      * @param array $options
-     * @return $this
+     *                       @return $this
      */
     public function setOptions($options)
     {

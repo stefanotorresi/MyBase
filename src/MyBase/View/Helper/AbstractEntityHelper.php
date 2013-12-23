@@ -13,7 +13,7 @@ use Zend\View\Helper\AbstractHelper as ZendAbstractHelper;
 abstract class AbstractEntityHelper extends ZendAbstractHelper
     implements DataMapper\MapperAwareInterface
 {
-    use DataMapper\MapperAwareTrait
+    use DataMapper\MapperAwareTrait;
 
     /**
      * @var string
@@ -30,7 +30,7 @@ abstract class AbstractEntityHelper extends ZendAbstractHelper
 
     /**
      * @param string|null $partial
-     * @return $this
+     *                             @return $this
      */
     public function __invoke($partial = null)
     {
