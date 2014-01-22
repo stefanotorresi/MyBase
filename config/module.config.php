@@ -19,7 +19,8 @@ return array(
 
     'service_manager' => array(
         'factories' => array(
-            'MyAsseticSassFilter' => __NAMESPACE__ . '\ServiceManager\AsseticSassFilterFactory'
+            'MyAsseticSassFilter'   => 'MyBase\ServiceManager\AsseticSassFilterFactory',
+            'HTMLPurifier'          => 'MyBase\ServiceManager\HTMLPurifierFactory',
         ),
     ),
 
@@ -37,6 +38,20 @@ return array(
         'invokables' => array(
             'ellipsis' => 'MyBase\Filter\Ellipsis',
             'fileArrayToString' => 'MyBase\Filter\FileArrayToString',
+        ),
+    ),
+
+    'soflomo_purifier' => array(
+        'config' => array(
+            'HTML.DefinitionID' => 'my-base custom definition',
+            'HTML.DefinitionRev' => 2,
+        ),
+        'definitions' => array(
+            'HTML' => array(
+                'addAttribute' => array(
+                    'a', 'target', 'Enum#_blank,_self,_target,_top'
+                ),
+            ),
         ),
     ),
 );

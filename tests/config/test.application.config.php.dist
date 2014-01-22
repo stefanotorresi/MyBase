@@ -4,6 +4,7 @@ namespace MyBase;
 
 return [
     'modules' => [
+        'Soflomo\Purifier',
         __NAMESPACE__,
     ],
     'module_listener_options' => [

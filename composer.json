@@ -7,11 +7,13 @@
     },
     "require-dev": {
         "kriswallsmith/assetic": "1.*",
+        "soflomo/purifier": "0.*",
         "zendframework/zendframework" : "2.*"
     },
     "suggest": {
-        "zendframework/zendframework" : "The framework is required for most of MyBase content",
-        "doctrine/orm" : "Doctrine ORM is required to use MyBase\\Doctrine package"
+        "doctrine/orm" : "Doctrine ORM is required to use MyBase\\Doctrine package",
+        "kriswallsmith/assetic": "",
+        "soflomo/purifier": ""
     },
     "extra": {
         "branch-alias": {

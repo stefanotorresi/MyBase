@@ -3,4 +3,10 @@
     <testsuite name="MyBase Test Suite">
         <directory>./MyBaseTest</directory>
     </testsuite>
+
+    <filter>
+        <whitelist>
+            <directory>../src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
