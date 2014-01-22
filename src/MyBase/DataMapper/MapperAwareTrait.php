@@ -15,8 +15,8 @@ trait MapperAwareTrait
     protected $mapper;
 
     /**
-     * @param MapperInterface $mapper
-     *                                @return $this
+     * @param  MapperInterface $mapper
+     * @return $this
      */
     public function setMapper(MapperInterface $mapper)
     {

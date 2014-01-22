@@ -19,8 +19,8 @@ trait EntityManagerAwareTrait
     /**
      * Set the entity manager
      *
-     * @param EntityManager $entityManager
-     *                                     @return $this
+     * @param  EntityManager $entityManager
+     * @return $this
      */
     public function setEntityManager(EntityManager $entityManager)
     {

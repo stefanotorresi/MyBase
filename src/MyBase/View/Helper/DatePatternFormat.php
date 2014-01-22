@@ -58,8 +58,8 @@ class DatePatternFormat extends DateFormat
     }
 
     /**
-     * @param mixed $pattern
-     *                       @return $this
+     * @param  mixed $pattern
+     * @return $this
      */
     public function setPattern($pattern)
     {

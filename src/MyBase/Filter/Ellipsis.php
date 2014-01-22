@@ -84,8 +84,8 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @param int $maxLength
-     *                       @return $this
+     * @param  int   $maxLength
+     * @return $this
      */
     public function setMaxLength($maxLength)
     {
@@ -106,8 +106,8 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @param string $character
-     *                          @return $this
+     * @param  string $character
+     * @return $this
      */
     public function setEllipsis($character)
     {
@@ -125,8 +125,8 @@ class Ellipsis extends AbstractFilter
     }
 
     /**
-     * @param string $encoding
-     *                         @return $this
+     * @param  string $encoding
+     * @return $this
      */
     public function setEncoding($encoding)
     {

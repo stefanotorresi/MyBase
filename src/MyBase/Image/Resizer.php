@@ -72,7 +72,7 @@ class Resizer
     /**
      * @param  array|Traversable        $options
      * @throws InvalidArgumentException
-     *                                          @return $this
+     * @return $this
      */
     public function setOptions($options)
     {
@@ -95,8 +95,8 @@ class Resizer
     }
 
     /**
-     * @param int $quality
-     *                     @return $this
+     * @param  int   $quality
+     * @return $this
      */
     public function setQuality($quality)
     {
@@ -114,8 +114,8 @@ class Resizer
     }
 
     /**
-     * @param string $mode
-     *                     @return $this
+     * @param  string $mode
+     * @return $this
      */
     public function setMode($mode)
     {
@@ -133,8 +133,8 @@ class Resizer
     }
 
     /**
-     * @param string $fillColor
-     *                          @return $this
+     * @param  string $fillColor
+     * @return $this
      */
     public function setFillColor($fillColor)
     {
@@ -154,7 +154,7 @@ class Resizer
     /**
      * @param  string                   $destDir
      * @throws InvalidArgumentException
-     *                                          @return $this
+     * @return $this
      */
     public function setDestDir($destDir)
     {
@@ -178,8 +178,8 @@ class Resizer
     }
 
     /**
-     * @param boolean $overwrite
-     *                           @return $this
+     * @param  boolean $overwrite
+     * @return $this
      */
     public function setOverwrite($overwrite)
     {
@@ -205,8 +205,8 @@ class Resizer
     }
 
     /**
-     * @param int $dpi
-     *                 @return $this
+     * @param  int   $dpi
+     * @return $this
      */
     public function setDpi($dpi)
     {

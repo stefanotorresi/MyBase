@@ -66,9 +66,9 @@ class ResizerTest extends PHPUnit_Framework_TestCase
      * @dataProvider dataImages
      *
      * @param  string $source
-     *                        @param $width
-     *                        @param $height
-     *                        @param $mode
+     * @param $width
+     * @param $height
+     * @param $mode
      * @return string
      */
     public function testResize($source, $width, $height, $mode = null)

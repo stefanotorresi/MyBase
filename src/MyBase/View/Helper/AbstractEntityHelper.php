@@ -29,8 +29,8 @@ abstract class AbstractEntityHelper extends ZendAbstractHelper
     }
 
     /**
-     * @param string|null $partial
-     *                             @return $this
+     * @param  string|null $partial
+     * @return $this
      */
     public function __invoke($partial = null)
     {
