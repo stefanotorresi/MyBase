@@ -6,7 +6,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Image;
+namespace MyBase\Test\Image;
 
 use Imagick;
 use PHPUnit_Framework_TestCase;

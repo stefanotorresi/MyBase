@@ -6,7 +6,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Util;
+namespace MyBase\Test\Util;
 
 use PHPUnit_Framework_TestCase;
 use MyBase\Util\Serializor;

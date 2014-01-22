@@ -15,7 +15,47 @@ abstract class AbstractModule implements
     Feature\AutoloaderProviderInterface,
     Feature\ConfigProviderInterface
 {
+    /**
+     * @var string
+     */
     protected $dir;
+
+    /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
+     * @var int
+     */
+    protected $psr = 0;
+
+    public function __construct()
+    {
+        $className = get_class($this);
+        $this->namespace = substr($className, 0, strpos($className, '\\'));
+
+        $reflector = new \ReflectionClass($className);
+        $classDir = dirname($reflector->getFileName());
+        $baseClassDir = pathinfo($classDir, PATHINFO_BASENAME);
+
+        if ($baseClassDir === $this->getNamespace()) {
+            $this->dir = realpath(dirname(dirname($classDir))); // PSR-0 i.e. src/Namespace/Module.php
+        } elseif ($baseClassDir === 'src') {
+            $this->dir = realpath(dirname($classDir)); // PSR-4 i.e. src/Module.php
+            $this->psr = 4;
+        } else {
+            throw new \RuntimeException("Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
 
     /**
      * Module root directory
@@ -24,12 +64,6 @@ abstract class AbstractModule implements
      */
     public function getDir()
     {
-        if (! $this->dir) {
-            $reflector = new \ReflectionClass(get_class($this));
-            $classDir = dirname($reflector->getFileName());
-            $this->dir = realpath($classDir . '/../..'); // assume PSR-0 compliant structure, e.g. src/Namespace/Module.php
-        }
-
         return $this->dir;
     }
 
@@ -38,8 +72,11 @@ abstract class AbstractModule implements
      */
     public function getAutoloaderConfig()
     {
-        $className = get_class($this);
-        $namespace = substr($className, 0, strpos($className, '\\'));
+        $moduleNamespaceDir = $this->getDir() . '/src/';
+
+        if ($this->psr == 0) {
+            $moduleNamespaceDir .= $this->getNamespace();
+        }
 
         return [
             'Zend\Loader\ClassMapAutoloader' => [
@@ -47,7 +84,7 @@ abstract class AbstractModule implements
             ],
             'Zend\Loader\StandardAutoloader' => [
                 'namespaces' => [
-                    $namespace => $this->getDir() . '/src/' . $namespace,
+                    $this->getNamespace() => $moduleNamespaceDir,
                 ],
             ],
         ];

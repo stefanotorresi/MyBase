@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Controller;
+namespace MyBase\Test\Controller;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Http\Request as HttpRequest;

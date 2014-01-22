@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\ServiceManager;
+namespace MyBase\Test\ServiceManager;
 
 use MyBase\ServiceManager\AsseticSassFilterFactory;
 use PHPUnit_Framework_Assert;

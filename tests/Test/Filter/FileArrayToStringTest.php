@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Filter;
+namespace MyBase\Test\Filter;
 
 use MyBase\Filter\FileArrayToString;
 use PHPUnit_Framework_TestCase;
@@ -72,7 +72,7 @@ class FileArrayToStringTest extends PHPUnit_Framework_TestCase
             [
                 new TestAsset\StringConvertible(),
                 [],
-                'MyBaseTest\Filter\TestAsset\StringConvertible'
+                'MyBase\Test\Filter\TestAsset\StringConvertible'
             ],
         ];
     }
