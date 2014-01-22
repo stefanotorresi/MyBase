@@ -30,6 +30,14 @@ abstract class AbstractModule implements
      */
     protected $psr = 0;
 
+    /**
+     * @var string
+     */
+    protected $configGlob = '*.config.php';
+
+    /**
+     *
+     */
     public function __construct()
     {
         $className = get_class($this);
@@ -50,31 +58,13 @@ abstract class AbstractModule implements
     }
 
     /**
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    /**
-     * Module root directory
-     *
-     * @return string
-     */
-    public function getDir()
-    {
-        return $this->dir;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getAutoloaderConfig()
     {
         $moduleNamespaceDir = $this->getDir() . '/src/';
 
-        if ($this->psr == 0) {
+        if ($this->psr === 0) {
             $moduleNamespaceDir .= $this->getNamespace();
         }
 
@@ -111,6 +101,24 @@ abstract class AbstractModule implements
      */
     public function getConfigGlob()
     {
-        return '*.config.php';
+        return $this->configGlob;
+    }
+
+    /**
+     * Module root directory
+     *
+     * @return string
+     */
+    public function getDir()
+    {
+        return $this->dir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 }
