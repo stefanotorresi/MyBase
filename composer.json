@@ -11,7 +11,7 @@
     },
     "suggest": {
         "zendframework/zendframework" : "The framework is required for most of MyBase content",
-        "doctrine/doctrine2" : "Doctrine2 is required to use MyBase\\Doctrine package"
+        "doctrine/orm" : "Doctrine ORM is required to use MyBase\\Doctrine package"
     },
     "extra": {
         "branch-alias": {
