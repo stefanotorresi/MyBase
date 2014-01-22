@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest;
+namespace MyBase\Test;
 
 use Composer\Autoload\ClassLoader;
 use Zend\ModuleManager\ModuleManager;

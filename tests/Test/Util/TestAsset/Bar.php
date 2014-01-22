@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Util\TestAsset;
+namespace MyBase\Test\Util\TestAsset;
 
 class Bar
 {

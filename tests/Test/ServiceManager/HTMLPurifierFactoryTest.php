@@ -5,11 +5,11 @@
  * ************************************************
  */
 
-namespace MyBaseTest\ServiceManager;
+namespace MyBase\Test\ServiceManager;
 
 use HTMLPurifier;
 use MyBase\ServiceManager\HTMLPurifierFactory;
-use MyBaseTest\Bootstrap;
+use MyBase\Test\Bootstrap;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Stdlib\ArrayUtils;
 

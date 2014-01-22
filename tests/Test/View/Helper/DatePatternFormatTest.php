@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\View\Helper;
+namespace MyBase\Test\View\Helper;
 
 use MyBase\View\Helper\DatePatternFormat;
 use ZendTest\I18n\View\Helper\DateFormatTest;

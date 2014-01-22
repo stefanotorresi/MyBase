@@ -22,8 +22,9 @@
         }
     },
     "autoload" : {
-        "psr-0" : {
-            "MyBase" : "src"
+        "psr-4": {
+            "MyBase\\": "src/",
+            "MyBase\\Test\\": "tests/Test"
         },
         "classmap": [
             "./"

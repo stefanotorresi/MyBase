@@ -5,10 +5,12 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Util\TestAsset;
+namespace MyBase\Test\Filter\TestAsset;
 
-class Foo
+class StringConvertible
 {
-    public $name = 'foo';
-    public $bar;
+    public function __toString()
+    {
+        return __CLASS__;
+    }
 }

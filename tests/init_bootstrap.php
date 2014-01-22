@@ -5,11 +5,9 @@
  * ************************************************
  */
 
-namespace MyBaseTest;
-
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
-require __DIR__ . '/' . __NAMESPACE__ . '/Bootstrap.php';
+require __DIR__ . '/Test/Bootstrap.php';
 
-Bootstrap::init();
+MyBase\Test\Bootstrap::init();

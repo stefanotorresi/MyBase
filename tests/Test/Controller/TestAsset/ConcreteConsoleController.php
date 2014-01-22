@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Controller\TestAsset;
+namespace MyBase\Test\Controller\TestAsset;
 
 use MyBase\Controller\AbstractConsoleController;
 

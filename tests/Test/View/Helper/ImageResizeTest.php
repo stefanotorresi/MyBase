@@ -5,7 +5,7 @@
  * ************************************************
  */
 
-namespace MyBaseTest\View\Helper;
+namespace MyBase\Test\View\Helper;
 
 use MyBase\Image\Resizer;
 use MyBase\View\Helper\ImageResize;

@@ -5,10 +5,10 @@
  * ************************************************
  */
 
-namespace MyBaseTest\Filter;
+namespace MyBase\Test\Filter;
 
 use MyBase\Filter\Ellipsis;
-use MyBaseTest\Bootstrap;
+use MyBase\Test\Bootstrap;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Stdlib\StringUtils;
 
