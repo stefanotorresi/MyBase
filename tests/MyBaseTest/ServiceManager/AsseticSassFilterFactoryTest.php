@@ -8,6 +8,7 @@
 namespace MyBaseTest\ServiceManager;
 
 use MyBase\ServiceManager\AsseticSassFilterFactory;
+use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
 
 class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
@@ -20,7 +21,7 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!class_exists('Assetic\Filter\Sass\SassFilter')) {
-            $this->markTestSkipped('Assetic Sass filter class not found');
+            $this->markTestSkipped('Assetic Sass filter not found');
         }
 
         $this->factory = new AsseticSassFilterFactory();
@@ -52,21 +53,9 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
         $filter = $this->factory->createService($this->getServiceManagerMock($config));
 
         $this->assertInstanceOf('Assetic\Filter\Sass\SassFilter', $filter);
-
-        $reflection = new \ReflectionObject($filter);
-
-        $sassPathProp = $reflection->getProperty('sassPath');
-        $sassPathProp->setAccessible(true);
-
-        $rubyPathProp = $reflection->getProperty('rubyPath');
-        $rubyPathProp->setAccessible(true);
-
-        $scssProp = $reflection->getProperty('scss');
-        $scssProp->setAccessible(true);
-
-        $this->assertEquals('foo', $sassPathProp->getValue($filter));
-        $this->assertEquals('bar', $rubyPathProp->getValue($filter));
-        $this->assertTrue($scssProp->getValue($filter));
+        $this->assertEquals('foo', PHPUnit_Framework_Assert::readAttribute($filter, 'sassPath'));
+        $this->assertEquals('bar', PHPUnit_Framework_Assert::readAttribute($filter, 'rubyPath'));
+        $this->assertTrue(PHPUnit_Framework_Assert::readAttribute($filter, 'scss'));
     }
 
     public function testDefaultConstructorParameters()
@@ -78,15 +67,7 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
         );
         $filter = $this->factory->createService($this->getServiceManagerMock($config));
 
-        $reflection = new \ReflectionObject($filter);
-
-        $sassPathProp = $reflection->getProperty('sassPath');
-        $sassPathProp->setAccessible(true);
-
-        $rubyPathProp = $reflection->getProperty('rubyPath');
-        $rubyPathProp->setAccessible(true);
-
-        $this->assertNull($sassPathProp->getValue($filter));
-        $this->assertNull($rubyPathProp->getValue($filter));
+        $this->assertNull(PHPUnit_Framework_Assert::readAttribute($filter, 'sassPath'));
+        $this->assertNull(PHPUnit_Framework_Assert::readAttribute($filter, 'rubyPath'));
     }
 }
