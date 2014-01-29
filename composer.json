@@ -8,7 +8,9 @@
     "require-dev": {
         "kriswallsmith/assetic": "1.*",
         "soflomo/purifier": "0.*",
-        "zendframework/zendframework" : "2.*"
+        "zendframework/zendframework" : "2.*",
+        "doctrine/orm": "2.*",
+        "doctrine/doctrine-orm-module": "~0.8"
     },
     "suggest": {
         "doctrine/orm" : "Doctrine ORM is required to use MyBase\\Doctrine package",
