@@ -54,9 +54,11 @@ class BootstrapFormFile extends FormElement
         $replaceLabel = $translateHelper("Replace");
         $removeLabel = $translateHelper("Remove");
 
+        $containerClass = $element->getValue() ? 'exists' : 'new';
+
         $this->controlWrapper = <<<EOD
 <div class="controls" id="controls-%s">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
+    <div class="fileupload fileupload-$containerClass" data-provides="fileupload">
         <div class="input-append">
             <div class="uneditable-input span2">
                 <i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
@@ -66,7 +68,7 @@ class BootstrapFormFile extends FormElement
                 <span class="fileupload-exists">$replaceLabel</span>
                 %s
             </span>
-            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">$removeLabel</a>
+            <a href="#" class="btn btn-file-remove fileupload-exists" data-dismiss="fileupload">$removeLabel</a>
         </div>
     </div>
     %s
