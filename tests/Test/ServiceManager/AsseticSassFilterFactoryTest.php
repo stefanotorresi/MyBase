@@ -41,15 +41,15 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testFactoryFunctionality()
     {
-        $config = array(
-            'MyBase' => array(
-                'AsseticSassFilter' => array(
+        $config = [
+            'MyBase' => [
+                'AsseticSassFilter' => [
                     'sass_path' => 'foo',
                     'ruby_path' => 'bar',
                     'scss' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $filter = $this->factory->createService($this->getServiceManagerMock($config));
 
         $this->assertInstanceOf('Assetic\Filter\Sass\SassFilter', $filter);
@@ -60,11 +60,11 @@ class AsseticSassFilterFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultConstructorParameters()
     {
-        $config = array(
-            'MyBase' => array(
-                'AsseticSassFilter' => array()
-            )
-        );
+        $config = [
+            'MyBase' => [
+                'AsseticSassFilter' => []
+            ]
+        ];
         $filter = $this->factory->createService($this->getServiceManagerMock($config));
 
         $this->assertNull(PHPUnit_Framework_Assert::readAttribute($filter, 'sassPath'));

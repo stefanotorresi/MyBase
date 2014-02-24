@@ -56,7 +56,7 @@ class Resizer
      * @param  array            $options
      * @throws RuntimeException
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!extension_loaded('imagick')) {
             throw new RuntimeException('Imagick extension not loaded');
@@ -234,13 +234,13 @@ class Resizer
 
         $destination = vsprintf(
             '%s-%s-%dx%d-%d.jpg',
-            array(
+            [
                 $this->getDestDir().DIRECTORY_SEPARATOR.$srcFileName,
                 $this->getMode(),
                 $width,
                 $height,
                 $this->getQuality()
-            )
+            ]
         );
 
         if (file_exists($destination) && !$this->overwrite) {

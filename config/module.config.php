@@ -7,51 +7,51 @@
 
 namespace MyBase;
 
-return array(
-    __NAMESPACE__ => array(
-        'AsseticSassFilter' => array(
+return [
+    __NAMESPACE__ => [
+        'AsseticSassFilter' => [
             'sass_path' => '/usr/bin/sass',
             'scss' => true,
             'style' => 'compressed',
             'unix_newlines' => true
-        )
-    ),
+        ]
+    ],
 
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             'MyAsseticSassFilter'   => 'MyBase\ServiceManager\AsseticSassFilterFactory',
             'HTMLPurifier'          => 'MyBase\ServiceManager\HTMLPurifierFactory',
-        ),
-    ),
+        ],
+    ],
 
-    'view_helpers' => array(
-        'invokables' => array(
+    'view_helpers' => [
+        'invokables' => [
             'imageResize' => 'MyBase\View\Helper\ImageResize',
             'datePatternFormat' => 'MyBase\View\Helper\DatePatternFormat',
             'timeAgo' => 'MyBase\View\Helper\TimeAgo',
             'formfieldset' => 'MyBase\View\Helper\FormFieldset',
             'bootstrapFormFile' => 'MyBase\View\Helper\BootstrapFormFile',
-        ),
-    ),
+        ],
+    ],
 
-    'filters' => array(
-        'invokables' => array(
+    'filters' => [
+        'invokables' => [
             'ellipsis' => 'MyBase\Filter\Ellipsis',
             'fileArrayToString' => 'MyBase\Filter\FileArrayToString',
-        ),
-    ),
+        ],
+    ],
 
-    'soflomo_purifier' => array(
-        'config' => array(
+    'soflomo_purifier' => [
+        'config' => [
             'HTML.DefinitionID' => 'my-base custom definition',
             'HTML.DefinitionRev' => 2,
-        ),
-        'definitions' => array(
-            'HTML' => array(
-                'addAttribute' => array(
+        ],
+        'definitions' => [
+            'HTML' => [
+                'addAttribute' => [
                     'a', 'target', 'Enum#_blank,_self,_target,_top'
-                ),
-            ),
-        ),
-    ),
-);
+                ],
+            ],
+        ],
+    ],
+];

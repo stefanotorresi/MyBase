@@ -21,12 +21,12 @@ abstract class Factory
     /**
      * @var array Known transport types
      */
-    protected static $classMap = array(
+    protected static $classMap = [
         'file'      => 'Zend\Mail\Transport\File',
         'null'      => 'Zend\Mail\Transport\Null',
         'sendmail'  => 'Zend\Mail\Transport\Sendmail',
         'smtp'      => 'Zend\Mail\Transport\Smtp',
-    );
+    ];
 
     /**
      * @param  array                     $spec
@@ -34,7 +34,7 @@ abstract class Factory
      * @throws InvalidArgumentException
      * @throws Exception\DomainException
      */
-    public static function create($spec = array())
+    public static function create($spec = [])
     {
         if ($spec instanceof Traversable) {
             $spec = ArrayUtils::iteratorToArray($spec);

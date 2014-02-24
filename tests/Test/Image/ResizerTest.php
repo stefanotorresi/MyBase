@@ -33,14 +33,14 @@ class ResizerTest extends PHPUnit_Framework_TestCase
 
     public function testAccessors()
     {
-        $options = array(
+        $options = [
             'destDir' => $this->outputDir,
             'overwrite' => true,
             'mode' => Resizer::CROP_MODE,
             'quality' => 66,
             'fillColor' => '#000000',
             'dpi' => 72,
-        );
+        ];
 
         $resizer = new Resizer($options);
 
@@ -75,11 +75,11 @@ class ResizerTest extends PHPUnit_Framework_TestCase
     {
         $source = $this->assetsDir . DIRECTORY_SEPARATOR . $source;
 
-        $options = array(
+        $options = [
             'destDir' => $this->outputDir,
             'overwrite' => true,
             'mode' => $mode,
-        );
+        ];
 
         $resizer = new Resizer($options);
 
@@ -113,22 +113,22 @@ class ResizerTest extends PHPUnit_Framework_TestCase
 
     public function dataImages()
     {
-        return array(
-            array('unionjack.jpg', 400, 0),
-            array('unionjack.jpg', 400, 0, Resizer::CROP_MODE),
-            array('unionjack.jpg', 0, 400),
-            array('unionjack.jpg', 0, 400, Resizer::CROP_MODE),
-            array('unionjack.jpg', 400, 300),
-            array('unionjack.jpg', 400, 300, Resizer::FILL_MODE),
-            array('unionjack.jpg', 400, 300, Resizer::CROP_MODE),
-            array('beermug.jpg', 300, 200),
-            array('beermug.jpg', 300, 200, Resizer::FILL_MODE),
-            array('beermug.jpg', 300, 200, Resizer::CROP_MODE),
-            array('beermug.jpg', 300, 0),
-            array('beermug.jpg', 300, 0, Resizer::CROP_MODE),
-            array('beermug.jpg', 0, 300),
-            array('beermug.jpg', 0, 300, Resizer::CROP_MODE),
-        );
+        return [
+            ['unionjack.jpg', 400, 0],
+            ['unionjack.jpg', 400, 0, Resizer::CROP_MODE],
+            ['unionjack.jpg', 0, 400],
+            ['unionjack.jpg', 0, 400, Resizer::CROP_MODE],
+            ['unionjack.jpg', 400, 300],
+            ['unionjack.jpg', 400, 300, Resizer::FILL_MODE],
+            ['unionjack.jpg', 400, 300, Resizer::CROP_MODE],
+            ['beermug.jpg', 300, 200],
+            ['beermug.jpg', 300, 200, Resizer::FILL_MODE],
+            ['beermug.jpg', 300, 200, Resizer::CROP_MODE],
+            ['beermug.jpg', 300, 0],
+            ['beermug.jpg', 300, 0, Resizer::CROP_MODE],
+            ['beermug.jpg', 0, 300],
+            ['beermug.jpg', 0, 300, Resizer::CROP_MODE],
+        ];
     }
 
     /**
@@ -140,24 +140,24 @@ class ResizerTest extends PHPUnit_Framework_TestCase
     {
         $source = realpath($this->assetsDir.DIRECTORY_SEPARATOR.$source);
 
-        $resizer = new Resizer(array(
+        $resizer = new Resizer([
             'destDir' => $this->outputDir,
             'mode' => $mode,
             'overwrite' => true,
-        ));
+        ]);
 
         $resize = $resizer->resize($source, $width, $height);
     }
 
     public function invalidImages()
     {
-        return array(
-            array('unionjack.jpg', 400, 0, Resizer::FILL_MODE),
-            array('unionjack.jpg', 0, 400, Resizer::FILL_MODE),
-            array('unionjack.jpg', 0, 0, Resizer::FILL_MODE),
-            array('unionjack.jpg', 0, 0, Resizer::CROP_MODE),
-            array('nonexistent', 400, 300, Resizer::DEFAULT_MODE),
-        );
+        return [
+            ['unionjack.jpg', 400, 0, Resizer::FILL_MODE],
+            ['unionjack.jpg', 0, 400, Resizer::FILL_MODE],
+            ['unionjack.jpg', 0, 0, Resizer::FILL_MODE],
+            ['unionjack.jpg', 0, 0, Resizer::CROP_MODE],
+            ['nonexistent', 400, 300, Resizer::DEFAULT_MODE],
+        ];
     }
 
     public function testExistentDestinationIsReturnedWhenOverwriteIsOff()

@@ -17,7 +17,7 @@ class FileArrayToString implements FilterInterface
         'use_uploaded_name' => false,
     ];
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->setOptions($options);
     }

@@ -34,7 +34,7 @@ class TimeAgo extends AbstractTranslatorHelper
 
         $timeAgo = time() - $time;
 
-        $divisors = array (
+        $divisors = [
             31536000 => 'year',
             2592000 => 'month',
             604800 => 'week',
@@ -42,7 +42,7 @@ class TimeAgo extends AbstractTranslatorHelper
             3600 => 'hour',
             60 => 'minute',
             1 => 'second'
-        );
+        ];
 
         foreach ($divisors as $divisor => $text) {
             if ($timeAgo < $divisor) {

@@ -32,7 +32,7 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
     public function testConstructorAndAccessors()
     {
         $resizer = $this->getMock('MyBase\Image\Resizer');
-        $options = array('foo' => 'bar');
+        $options = ['foo' => 'bar'];
         $helper = new ImageResize($resizer, $options);
 
         $this->assertEquals($resizer, $helper->getResizer());
@@ -71,13 +71,13 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
 
     public function dataHelperInvokeOptions()
     {
-        return array(
-            array('test-image.jpg', array('width' => 400, 'height' => 300)),
-            array('test-image.jpg', array('quality' => 75)),
-            array('test-image.jpg', array('relativeDir' => 'foo/')),
-            array('test-image.jpg', array('relativeDir' => '/foo/')),
-            array('test-image.jpg', array('relativeDir' => '/foo')),
-        );
+        return [
+            ['test-image.jpg', ['width' => 400, 'height' => 300]],
+            ['test-image.jpg', ['quality' => 75]],
+            ['test-image.jpg', ['relativeDir' => 'foo/']],
+            ['test-image.jpg', ['relativeDir' => '/foo/']],
+            ['test-image.jpg', ['relativeDir' => '/foo']],
+        ];
     }
 
     public function testResizerExceptionAreCatchedAndPlaceholderIsDisplayed()
@@ -97,7 +97,7 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
         $helper->setTranslator($translator);
         $helper->setResizer($resizer);
 
-        $result = $helper->__invoke('missing-image', array('width' => 100, 'height' => 100));
+        $result = $helper->__invoke('missing-image', ['width' => 100, 'height' => 100]);
 
         $this->assertEquals('http://placehold.it/100x100&text=translated message', $result);
     }
@@ -113,7 +113,7 @@ class ImageResizeTest extends \PHPUnit_Framework_TestCase
 
         $helper->setResizer($resizer);
 
-        $result = $helper->__invoke('missing-image', array('width' => 100, 'height' => 100, 'showResizerExceptions' => true));
+        $result = $helper->__invoke('missing-image', ['width' => 100, 'height' => 100, 'showResizerExceptions' => true]);
 
         $this->assertEquals('http://placehold.it/100x100&text=some exception message', $result);
     }

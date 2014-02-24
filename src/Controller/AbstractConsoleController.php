@@ -22,7 +22,7 @@ abstract class AbstractConsoleController extends AbstractActionController
 
     public function setEventManager(EventManagerInterface $events)
     {
-        $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'preDispatch'), 100);
+        $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'preDispatch'], 100);
 
         return parent::setEventManager($events);
     }

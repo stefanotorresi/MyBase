@@ -22,7 +22,7 @@ class ImageResize extends AbstractTranslatorHelper
     /**
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'destDir' => './public/img/generated',
         'relativeDir' => '/img/generated',
         'width' => 0,
@@ -30,13 +30,13 @@ class ImageResize extends AbstractTranslatorHelper
         'mode' => Resizer::DEFAULT_MODE,
         'overwrite' => false,
         'showResizerExceptions' => false,
-    );
+    ];
 
     /**
      * @param null  $resizer
      * @param array $options
      */
-    public function __construct($resizer = null, $options = array())
+    public function __construct($resizer = null, $options = [])
     {
         if ($resizer) {
             $this->setResizer($resizer);
@@ -52,7 +52,7 @@ class ImageResize extends AbstractTranslatorHelper
      * @param  array  $options
      * @return string
      */
-    public function __invoke($src, $options = array())
+    public function __invoke($src, $options = [])
     {
         $options = $this->normalizeOptions($options);
         $this->getResizer()->setOptions($options);

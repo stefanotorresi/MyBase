@@ -21,7 +21,7 @@ class Serializor
      * @return NULL|Array
      *
      */
-    public static function toArray($mixed, $depth = 1, $whitelist = array(), $blacklist = array())
+    public static function toArray($mixed, $depth = 1, $whitelist = [], $blacklist = [])
     {
 
         // If we drop below depth 0, just return NULL
@@ -32,7 +32,7 @@ class Serializor
         // If this is an array, we need to loop through the values
         if (is_array($mixed) || $mixed instanceof Traversable) {
             // Somthing to Hold Return Values
-            $anArray = array();
+            $anArray = [];
 
             // The Loop
             foreach ($mixed as $key => $value) {
@@ -64,7 +64,7 @@ class Serializor
      * @param  array      $blacklist List of entity=>array(parameters) to skip
      * @return NULL|Array
      */
-    private static function arrayizor($anObject, $depth, $whitelist = array(), $blacklist = array())
+    private static function arrayizor($anObject, $depth, $whitelist = [], $blacklist = [])
     {
         // Determine the next depth to use
         $nextDepth = $depth - 1;
@@ -85,7 +85,7 @@ class Serializor
             $clazzProps = $parent->getProperties();
         }
         // A new array to hold things for us
-        $anArray = array();
+        $anArray = [];
 
         // Lets loop through those class properties now
         foreach ($clazzProps as $prop) {

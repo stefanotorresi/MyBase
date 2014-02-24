@@ -22,10 +22,10 @@ class AsseticSassFilterFactory implements FactoryInterface
     {
         $hydrator = new ClassMethods();
         $config = $serviceLocator->get('Config');
-        $options = array_merge(array(
+        $options = array_merge([
             'sass_path' => null,
             'ruby_path' => null
-        ), $config['MyBase']['AsseticSassFilter']);
+        ], $config['MyBase']['AsseticSassFilter']);
 
         $filter = new SassFilter($options['sass_path'], $options['ruby_path']);
         $hydrator->hydrate($options, $filter);

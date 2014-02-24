@@ -22,11 +22,11 @@ class Ellipsis extends AbstractFilter
     /**
      * @var int
      */
-    protected $options = array(
+    protected $options = [
         'maxLength' => null,
         'ellipsis' => ' […]',
         'encoding' => 'UTF-8',
-    );
+    ];
 
     /**
      * @param mixed $maxLengthOrOptions

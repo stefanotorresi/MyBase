@@ -13,7 +13,7 @@ use Zend\Form\Element\Select;
 class CountrySelect extends Select
 {
 
-    public $countries = array(
+    public $countries = [
         "AU" => "Australia",
         "AF" => "Afghanistan",
         "AL" => "Albania",
@@ -260,9 +260,9 @@ class CountrySelect extends Select
         "ZR" => "Zaire",
         "ZM" => "Zambia",
         "ZW" => "Zimbabwe"
-    );
+    ];
 
-    public function __construct($name = null, $options = array())
+    public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
 
