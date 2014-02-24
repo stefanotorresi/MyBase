@@ -34,7 +34,7 @@ class HTMLPurifierFactoryTest extends TestCase
         $this->factory = new HTMLPurifierFactory();
 
         $this->config = ArrayUtils::merge(
-            include '../vendor/soflomo/purifier/config/module.config.php',
+            include './vendor/soflomo/purifier/config/module.config.php',
             [
                 'soflomo_purifier' => [
                     'definitions' => [
