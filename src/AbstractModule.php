@@ -26,6 +26,11 @@ abstract class AbstractModule implements
     protected $namespace;
 
     /**
+     * @var string
+     */
+    protected $namespaceDir;
+
+    /**
      * @var int
      */
     protected $psr = 0;
@@ -41,20 +46,12 @@ abstract class AbstractModule implements
     public function __construct()
     {
         $className = get_class($this);
-        $this->namespace = substr($className, 0, strpos($className, '\\'));
-
         $reflector = new \ReflectionClass($className);
-        $classDir = dirname($reflector->getFileName());
-        $baseClassDir = pathinfo($classDir, PATHINFO_BASENAME);
+        $fileName  = $reflector->getFileName();
 
-        if ($baseClassDir === $this->getNamespace()) {
-            $this->dir = realpath(dirname(dirname($classDir))); // PSR-0 i.e. src/Namespace/Module.php
-        } elseif ($baseClassDir === 'src') {
-            $this->dir = realpath(dirname($classDir)); // PSR-4 i.e. src/Module.php
-            $this->psr = 4;
-        } else {
-            throw new \RuntimeException("Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
-        }
+        $this->namespaceDir = dirname($fileName);
+        $this->namespace    = $reflector->getNamespaceName();
+        $this->dir          = $this->detectModuleDir($fileName);
     }
 
     /**
@@ -62,19 +59,13 @@ abstract class AbstractModule implements
      */
     public function getAutoloaderConfig()
     {
-        $moduleNamespaceDir = $this->getDir() . '/src/';
-
-        if ($this->psr === 0) {
-            $moduleNamespaceDir .= $this->getNamespace();
-        }
-
         return [
             'Zend\Loader\ClassMapAutoloader' => [
                 $this->getDir() . '/autoload_classmap.php',
             ],
             'Zend\Loader\StandardAutoloader' => [
                 'namespaces' => [
-                    $this->getNamespace() => $moduleNamespaceDir,
+                    $this->getNamespace() => $this->namespaceDir,
                 ],
             ],
         ];
@@ -120,5 +111,36 @@ abstract class AbstractModule implements
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    /**
+     * @param $fileName
+     * @throws \RuntimeException
+     * @internal param $classDir
+     * @return string
+     */
+    protected function detectModuleDir($fileName)
+    {
+        $classDir = dirname($fileName);
+        $baseModuleClassDir = pathinfo($classDir, PATHINFO_BASENAME);
+
+        if (strrpos($this->getNamespace(), $baseModuleClassDir)
+            === strlen($this->getNamespace()) - strlen($baseModuleClassDir)) {
+            $dir = $classDir;
+            $nestLevel = substr_count($this->getNamespace(), '\\');
+            for ($i = 0; $i < $nestLevel; $i++) {
+                $dir = dirname($dir);
+            };
+
+            return dirname(dirname($dir)); // PSR-0 i.e. src/Namespace/Module.php
+        }
+
+        if ($baseModuleClassDir === 'src') {
+            $this->psr = 4;
+
+            return dirname($classDir); // PSR-4 i.e. src/Module.php
+        }
+
+        throw new \RuntimeException("Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
     }
 }
