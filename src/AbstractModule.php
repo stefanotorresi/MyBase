@@ -124,22 +124,23 @@ abstract class AbstractModule implements
         $classDir = dirname($fileName);
         $baseModuleClassDir = pathinfo($classDir, PATHINFO_BASENAME);
 
-        if (strrpos($this->getNamespace(), $baseModuleClassDir) === strlen($this->getNamespace()) - strlen($baseModuleClassDir)) {
+        if (strrpos($this->getNamespace(), $baseModuleClassDir)
+            === strlen($this->getNamespace()) - strlen($baseModuleClassDir)) {
             $dir = $classDir;
             $nestLevel = substr_count($this->getNamespace(), '\\');
             for ($i = 0; $i < $nestLevel; $i++) {
                 $dir = dirname($dir);
             };
-            $moduleDir = dirname(dirname($dir)); // PSR-0 i.e. src/Namespace/Module.php
-        } elseif ($baseModuleClassDir === 'src') {
+
+            return dirname(dirname($dir)); // PSR-0 i.e. src/Namespace/Module.php
+        }
+
+        if ($baseModuleClassDir === 'src') {
             $this->psr = 4;
-            $moduleDir = dirname($classDir); // PSR-4 i.e. src/Module.php
+
+            return dirname($classDir); // PSR-4 i.e. src/Module.php
         }
 
-        if (! isset($moduleDir)) {
-            throw new \RuntimeException("Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
-        }
-
-        return $moduleDir;
+        throw new \RuntimeException("Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
     }
 }
