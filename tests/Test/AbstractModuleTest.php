@@ -61,4 +61,21 @@ class AbstractModuleTest extends TestCase
             $autoloaderConfig['Zend\Loader\StandardAutoloader']['namespaces'][$module->getNamespace()]
         );
     }
+
+    public function testInvalidModuleThrowsException()
+    {
+        $this->setExpectedException('RuntimeException', "Could not detect module root directory. Please either use PSR-0 or PSR-4 structure.");
+        include __DIR__ . '/TestAsset/invalid-module-dir/Module.php';
+        $invalidModule = new \InvalidModule\Module();
+    }
+
+    public function testGetConfig()
+    {
+        $module = new \SamplePSR0Module\Module();
+
+        $config = $module->getConfig();
+
+        $this->assertContains('module-config', $config);
+        $this->assertContains('some-config', $config);
+    }
 }
