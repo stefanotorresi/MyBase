@@ -8,19 +8,8 @@
 
 namespace MyBase\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\MappedSuperclass
- */
 abstract class Entity
 {
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
     protected $id;
 
     /**
