@@ -8,12 +8,17 @@
 
 namespace MyBase\Form\Element;
 
-use Zend\Form\Element\Select;
-
-class CountrySelect extends Select
+class CountrySelect extends AbstractPrefilledSelect
 {
+    /**
+     * @var string
+     */
+    protected $inArrayValidatorMessage = 'Input is not a valid country code';
 
-    public $countries = [
+    /**
+     * @var array
+     */
+    protected static $countries = [
         "AU" => "Australia",
         "AF" => "Afghanistan",
         "AL" => "Albania",
@@ -262,10 +267,11 @@ class CountrySelect extends Select
         "ZW" => "Zimbabwe"
     ];
 
-    public function __construct($name = null, $options = [])
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultOptions()
     {
-        parent::__construct($name, $options);
-
-        $this->setValueOptions($this->countries);
+        return static::$countries;
     }
 }
