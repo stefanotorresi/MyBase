@@ -8,7 +8,6 @@
 namespace MyBase\Form\Element;
 
 use Zend\Form\Element\Select;
-use Zend\Form\Exception;
 use Zend\Validator\Explode;
 use Zend\Validator\InArray;
 
